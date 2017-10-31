@@ -12,7 +12,7 @@ the AMS reference and citation formattings are used.
  * **times** - Adobe Systems Utopia (1989) is the default serif font. Using times will load mathptmx
  * **blue** - makes the text for urls and references blue rather than black
  * **smallfoot** - makes the page number scriptsize rather than footnotesize
- * ** linenumbers** - if you want linenumbers, you can have linenumbers
+ * **linenumbers** - if you want linenumbers, you can have linenumbers
  * **nocopyright** - CSU now requires the copyright page. If this changes, nocopyright restores old format
 
 No guarantees are made that the template complies to current
