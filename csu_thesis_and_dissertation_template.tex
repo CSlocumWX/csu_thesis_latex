@@ -1,0 +1,96 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Template for CSU thesis and dissertation submissions
+%
+% This template is compliant with the CSU formatting guidelines as of
+% Fall 2017. Always send your thesis or dissertation to the library
+% with plenty of time prior to the deadline for formatting feedback.
+% No guarantees are made in regards to how well this template
+% conforms to the current library standards.
+%
+% Options for the documentclass
+% -----------------------------
+% masters
+%   including 'masters' will change 'Doctor of Philosophy'
+%   to 'Master of Science' for the degree
+% 10pt, 11pt, 12pt
+%   The title page, copyright page, and abstract are fixed at 12pt,
+%   but you can change the body to one of three options
+% times
+%   Adobe Systems Utopia (1989) is the default serif font. Using
+%   times will load mathptmx
+% blue
+%   makes the text for urls and references blue rather than black
+% smallfoot
+%   makes the page number scriptsize rather than footnotesize
+% linenumbers
+%   if you want linenumbers, you can have linenumbers
+% nocopyright
+%   CSU now requires the copyright page. If this changes, nocopyright
+%   restores old format
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[masters,11pt,blue]{csuthesis}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Title page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \title{Epic title here}
+    \author{John Doe}
+    \departmentname{Atmospheric Science}
+% Graduating term block
+    \gradterm{Fall}
+    \gradyear{2013}
+% Committee block
+    \advisor{Jane Doe}
+    \coadvisor{John Doe} %optional
+    \committee{Jane Doe \and John Doe \and Jane Doe}
+
+\makeatletter
+
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FRONT MATTER / PRELIMINARIES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frontmatter
+    \begin{abstract}
+        \input{./pre/abstract.tex}
+    \end{abstract}
+    \begin{acknowledgments}     % optional
+        \input{./pre/acknowledgments.tex}
+    \end{acknowledgments}
+    \begin{dedication}          % optional
+        \input{./pre/dedication.tex}
+    \end{dedication}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Make Title Page and Table of Contents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\maketitle
+\tableofcontents
+\listoffigures   %optional
+\listoftables    %optional
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CHAPTERS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mainmatter
+    \input{./chap1/chapter1.tex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% REFERENCES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\backmatter
+% Create a bibliography directory and place your .bib file there.
+    {\clearpage}
+    \bibliographystyle{ametsoc_csu}
+    {\setstretch{1}
+    \bibliography{references}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% APPENDIX (optional)
+% Use \appendix if there is only one appendix.
+%\appendix
+% Use \appendix[A], \appendix}[B], if you have multiple appendixes.
+%\appendix[A]
+%% Appendix title is necessary! For appendix title:
+%\appendixtitle{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    {\clearpage}
+    \appendix
+    \appendixtitle{Extra Stuff!}
+    \input{./appendA/appendixA.tex}
+\end{document}
