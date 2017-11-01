@@ -15,8 +15,7 @@
 %               comments to avoid confusion.
 %   20131020 -- Christopher Slocum fixed issues related to ToC and added more
 %               ametsoc requirements.
-%   20131108 -- Christopher Slocum ficed issues with spacing and ToC
-%
+%   20131108 -- Christopher Slocum fixed issues with spacing and ToC
 %   20170825 -- Christopher Slocum fixed the hyperlink issues
 %               Updated chapter, section, subsection, subsubsection format
 %               Added font size, font family, and url color options
@@ -31,6 +30,8 @@
 \DeclareOption{masters}{\phdfalse}
 \newif\ifmasterofscience \masterofsciencetrue
 \DeclareOption{nonscience}{\masterofsciencefalse}
+\newif\ifhyperref \hyperreffalse
+\DeclareOption{hyperref}{\hyperreftrue}
 \newif\ifblue \bluefalse
 \DeclareOption{blue}{\bluetrue}
 \newif\iftimes \timesfalse
@@ -73,9 +74,9 @@
     \def\coadvisor#1{\gdef\@coadvisor{#1}}
 \makeatother
 % basic page formatting
-\RequirePackage[dvips, letterpaper, textwidth=6.5in, textheight=9.0in, top=1in, left=1in, foot=0.5in]{geometry}
-\setlength\topmargin{0pt}
-\addtolength\topmargin{-0.5in}
+\RequirePackage[dvips, letterpaper, heightrounded, textwidth=6.5in, textheight=9.0in, top=1in, left=1in,
+                foot=0.5in, lmargin=1in, rmargin=1in, tmargin=1in, bmargin=1in, footskip=0.5in]{geometry}
+\topskip=9pt
 \RequirePackage{indentfirst}
 % set double spacing
 \RequirePackage[doublespacing]{setspace}
@@ -113,23 +114,25 @@
 \bibpunct{(}{)}{;}{a}{}{,}
 \RequirePackage{url}
 \RequirePackage{xcolor}
-\RequirePackage[breaklinks=true]{hyperref}
-\ifblue
-    \hypersetup{
-        colorlinks,
-        linkcolor={black},
-        citecolor={blue!80!black},
-        urlcolor={blue!80!black}
-    }
-\else
-    \hypersetup{
-        colorlinks,
-        linkcolor={black},
-        citecolor={black},
-        urlcolor={black}
-    }
+\ifhyperref
+    \RequirePackage[breaklinks=true]{hyperref}
+    \ifblue
+        \hypersetup{
+            colorlinks,
+            linkcolor={black},
+            citecolor={blue!80!black},
+            urlcolor={blue!80!black}
+        }
+    \else
+        \hypersetup{
+            colorlinks,
+            linkcolor={black},
+            citecolor={black},
+            urlcolor={black}
+        }
+    \fi
+    \newcommand*{\doi}[1]{\href{http://dx.doi.org/\detokenize{#1}}{doi: \detokenize{#1}}}
 \fi
-\newcommand*{\doi}[1]{\href{http://dx.doi.org/\detokenize{#1}}{doi: \detokenize{#1}}}
 
 
 \RequirePackage[pdftex]{lscape}
