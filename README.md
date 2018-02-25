@@ -10,6 +10,9 @@ preliminary pages (e.g., copyright page) and offers additional flexibility.
 Where the formatting guidelines allows, this template defaults to formatting used
 in publications by the [American Meteorological Society](https://www.ametsoc.org/).
 Specifically, the [AMS reference and citation format](https://www.ametsoc.org/ams/index.cfm/publications/authors/journal-and-bams-authors/formatting-and-manuscript-components/references/) style is used.
+`ametsoc_csu` in the `\bibliographystyle{}` command can be swapped for any
+user specified `.bst` file if a different reference and in-text citation format
+is preferred.
 
 ### Style optional arguments for the document class
  * **master** - including 'masters' will change 'Doctor of Philosophy' to 'Master of Science' for the degree
