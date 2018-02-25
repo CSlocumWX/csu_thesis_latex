@@ -23,3 +23,59 @@ Specifically, the [AMS reference and citation format](https://www.ametsoc.org/am
 
 No guarantees are made that the template complies to current
 university style guidelines.
+
+### Example LaTeX template
+Below is example LaTeX using the template. This example is similar to what is in the `./csu_thesis_and_dissertation_template.tex` file.
+```latex
+% Use commas to add additional optional style arguments.
+% In this example, we are only using the 11pt option.
+\documentclass[11pt]{csuthesis}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Title page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  % Title, your name, and your Dept.
+    \title{Epic title here}
+    \author{John Doe}
+    \departmentname{Atmospheric Science}
+  % Graduating term block
+    \gradterm{Fall}
+    \gradyear{2018}
+  % Committee block
+    \advisor{Jane Doe}
+    \coadvisor{John Doe} %optional
+    \committee{Jane Doe \and John Doe \and Jane Doe}
+\begin{document}
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  % PRELIMINARIES
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \begin{abstract}
+        % Abstract text here
+    \end{abstract}
+    \begin{acknowledgments}     % optional (delete section if unwanted)
+        % Acknowledgment text here
+    \end{acknowledgments}
+    \begin{dedication}          % optional (delete section if unwanted)
+        % Dedication text here
+    \end{dedication}
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  % Make Title Page and Table of Contents
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \maketitle
+    \tableofcontents
+    \listoftables    %optional (delete line if unwanted)
+    \listoffigures   %optional (delete line if unwanted)
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  % CHAPTERS and/or TEXT
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Using input is a nice way to help organize your work
+    \input{./chap1/chapter1.tex}
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  % REFERENCES
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  % Create a bibliography directory and place your .bib file there.
+    {\clearpage}
+    \bibliographystyle{ametsoc_csu}
+    {\setstretch{1}
+    \bibliography{references}}
+\end{document}
+```
