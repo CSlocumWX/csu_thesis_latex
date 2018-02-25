@@ -21,11 +21,18 @@
 %               Added font size, font family, and url color options
 %               Came up with a better way to do the TOC
 %               Updated Appendix formatting so that it matches AMS style
+%   20180225 -- Christopher Slocum removed the geometry package, made
+%               page number spacing dynamic, fixed headings, and cleaned
+%               up the class file so that it is easier to follow
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{csuthesis}[2017/08/25 CSU thesis and disseration class]
+\ProvidesClass{csuthesis}[2018/02/25 CSU thesis and disseration class]
 
-% documentclass options
+%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   Document class options
+%
+%%%%%%%%%%%%%%%%%%%%%%
 \newif\ifphd \phdtrue
 \DeclareOption{masters}{\phdfalse}
 \newif\ifmasterofscience \masterofsciencetrue
@@ -48,11 +55,19 @@
 \DeclareOption{12pt}{\def\@@ptsize{12pt}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{amsbook}}
 \ProcessOptions\relax
-% read in amsbook
+%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   Load amsbook class
+%
+%%%%%%%%%%%%%%%%%%%%%%%%
 \LoadClass[\@@ptsize, oneside, reqno]{amsbook}  % amsbook provides the foundation
-                                           % for the thesis class. amsbook does
-                                           % not play nice with some LaTex
-% parse preamble input
+                                                % for the thesis class. amsbook does
+                                                % not play nice with some LaTeX commands :(
+%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%    parse preamble input
+%
+%%%%%%%%%%%%%%%%%%%%%%%%
 \makeatletter
     \global \let \@author \@empty 
     \global \let \@date \@empty 
@@ -73,14 +88,45 @@
     \def\advisor#1{\gdef\@advisor{#1}}
     \def\coadvisor#1{\gdef\@coadvisor{#1}}
 \makeatother
-% basic page formatting
-\RequirePackage[dvips, letterpaper, heightrounded, textwidth=6.5in, textheight=9.0in, top=1in, left=1in,
-                foot=0.5in, lmargin=1in, rmargin=1in, tmargin=1in, bmargin=1in, footskip=0.5in]{geometry}
-\topskip=9pt
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   Page layout/formatting
+%
+%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage{indentfirst}
-% set double spacing
 \RequirePackage[doublespacing]{setspace}
-% page headings and numbering
+% getting the page number placement right.
+% 0.5 in is 36 pts. We subtract the font size and add some back
+% to find the footskip value
+\newlength{\footskipamount}
+\ifsmallfoot
+    \makeatletter
+        \setlength{\footskipamount}{33pt minus \@@ptsize \relax}
+    \makeatother
+\else
+    \makeatletter
+        \setlength{\footskipamount}{33pt minus \@@ptsize \relax}
+    \makeatother
+\fi
+
+% Setting the page
+\pdfpagewidth 8.5in
+\pdfpageheight 11in
+\headheight 0pt
+\headsep 0pt
+\footskip \footskipamount  % puts page number 0.5 in below text (e.g., 0.5in from bottom of page)
+\marginparwidth 0pt
+\marginparsep 0pt
+\oddsidemargin \dimexpr 1in -1in
+\topmargin \dimexpr 1in -1in
+\textwidth \dimexpr \pdfpagewidth -2\oddsidemargin -2in
+\textheight \dimexpr \pdfpageheight -2\topmargin -2in
+\clubpenalty=10000
+\widowpenalty=10000
+\raggedbottom
+
+% set page heading style (plain) and page numbering size
 \makeatletter
     \def\ps@plain{\ps@empty
      \def\@evenfoot{%
@@ -134,53 +180,55 @@
     \newcommand*{\doi}[1]{\href{http://dx.doi.org/\detokenize{#1}}{doi: \detokenize{#1}}}
 \fi
 
-
 \RequirePackage[pdftex]{lscape}
-
 %%%%%%%%%%%%%%%%%%%%%%%%
 %
-%           customizing the table of contents appearance
+%  customizing the table of contents appearance excluding the heading
 %
 %%%%%%%%%%%%%%%%%%%%%%
 \DeclareRobustCommand{\gobblefour}[4]{}
 \newcommand*{\SkipTocEntry}{\addtocontents{toc}{\gobblefour}}
 \makeatletter
-\def\l@figure{\@tocline{0}{0,0pt}{0pc}{9mm}{\ \ }}
-\def\l@table{\@tocline{0}{0,0pt}{0pc}{9mm}{\ \ }}
+    %\@tocline{<level>}{<space above>}{<indent from left margin>}{<hang indent>}{<font attributes>}
+    \def\l@figure{\@tocline{0}{0pt}{-2.5mm}{11mm}{\ \ }}
+    \def\l@table{\@tocline{0}{0pt}{-2.5mm}{11mm}{\ \ }}
+    % adding more space between numbers and dots
+    % http://mirrors.concertpass.com/tex-archive/macros/latex/contrib/tocloft/tocloft.pdf
+    \renewcommand{\@pnumwidth}{2em}  % default value is 1.55 em
+    \renewcommand{\@tocrmarg}{2.55em}  % default value is 2.55 em
 \makeatletter
 \renewcommand{\contentsname}{Table of Contents}
 \renewcommand{\bibname}{\MakeUppercase{References}}
+
 
 %%%%%%%%
 %
 % Chapter "Primary" Headings
 %
 %%%%%%%%
-
-\def\@makechapterhead#1{\global\topskip .625in\relax
+\def\@makechapterhead#1{\global\topskip 0.5in\relax
   \begingroup
     \normalsize\normalfont\scshape\bfseries\centering
     \ifnum\c@secnumdepth>\m@ne
       \leavevmode \hskip-\leftskip
       \rlap{\vbox to\z@{\vss
           \centerline{\normalsize\mdseries
-              \uppercase\@xp{\chaptername}\enspace\thechapter}
-          \vskip 3pc}}\hskip\leftskip\fi
-     \normalsize#1\par \endgroup
-  \skip@34\p@ \advance\skip@-\normalbaselineskip
+          \uppercase\@xp{\chaptername}\enspace\thechapter}
+          \vskip 3em}}
+     \hskip\leftskip\fi
+     \normalsize#1\par
+  \endgroup
+  \skip@ 3em \advance\skip@-\normalbaselineskip
   \vskip\skip@ }
-\def\@makeschapterhead#1{\global\topskip .625in\relax
-  \begingroup
-  \normalsize\normalfont\scshape\bfseries\centering
-  #1\par \endgroup
-  \skip@34\p@ \advance\skip@-\normalbaselineskip
-  \vskip\skip@ }
+
 \def\@makescsuhead#1{\global\topskip 0pc\relax
     \begingroup
-  \normalsize\normalfont\centering
-  \MakeUppercase{#1}\par~\\ \endgroup
-  \skip@34\p@ \advance\skip@-\normalbaselineskip
-  \vskip\skip@ }
+        \normalsize\normalfont\centering
+        \MakeUppercase{#1}\par
+        \skip@ 3em \advance\skip@-\normalbaselineskip
+        \vskip\skip@ 
+    \endgroup}
+
 \def\@starttoc#1#2{%
   \begingroup
   \setTrue{#1}%
@@ -216,244 +264,261 @@
   \z@{.7\linespacing\@plus\linespacing}{.5\linespacing}%
   {\normalfont\it}}
 
+%%%%%%%%
+%
+% Figure and table formatting
+%
+%%%%%%%%
 % AMS style for Figures and Tables
 \renewcommand{\figurename}{\textsc{Fig.}}
 \renewcommand{\tablename}{\textsc{Table}}
 \renewcommand{\thefigure}{\arabic{figure}}
 \renewcommand{\thetable}{\arabic{table}}
 \renewcommand{\appendixname}{Appendix}
-
 %%% Figure and Table caption formatting
 \RequirePackage[margin=0.15in]{caption}
 \setlength\abovecaptionskip{10\p@}
 \setlength\belowcaptionskip{5\p@}
-
-
 % section, table, figure, and equation nummbering
 \numberwithin{table}{chapter}
 \numberwithin{figure}{chapter}
 \numberwithin{section}{chapter}
 \numberwithin{equation}{chapter}
 
-
 \renewcommand\bibsection{\centering\bibname\addcontentsline{toc}{chapter}{References} ~\\ ~\\}{}
-\makeatother
 
 %dotted line for TOC.  This is the definition of \@tocline, copied out of amsbook.
 \makeatletter
-\def\@tocline#1#2#3#4#5#6#7{\relax
-  \ifnum #1>\c@tocdepth % then omit
-  \else
-    \par \addpenalty\@secpenalty\addvspace{#2}%
-    \begingroup \hyphenpenalty\@M
-    \@ifempty{#4}{%
-      \@tempdima\csname r@tocindent\number#1\endcsname\relax
-    }{%
-      \@tempdima#4\relax
-    }%
-    \parindent\z@ \leftskip#3\relax \advance\leftskip\@tempdima\relax
-    \rightskip\@pnumwidth plus4em \parfillskip-\@pnumwidth
-    #5\leavevmode\hskip-\@tempdima #6\nobreak\relax
-    \dotfill\hbox to\@pnumwidth{{\normalfont\@tocpagenum{#7}}}\par % the dotfill makes a dotted line across to the page number.
-    \nobreak
-    \endgroup
-  \fi}
+    \def\@tocline#1#2#3#4#5#6#7{\relax
+      \ifnum #1>\c@tocdepth % then omit
+      \else
+        \par \addpenalty\@secpenalty\addvspace{#2}%
+        \begingroup \hyphenpenalty\@M
+        \@ifempty{#4}{%
+          \@tempdima\csname r@tocindent\number#1\endcsname\relax
+        }{%
+          \@tempdima#4\relax
+        }%
+        \parindent\z@ \leftskip#3\relax \advance\leftskip\@tempdima\relax
+        \rightskip\@pnumwidth plus 4em \parfillskip-\@pnumwidth
+        #5\leavevmode\hskip-\@tempdima #6\nobreak\relax
+        \dotfill\hbox to\@pnumwidth{{\normalfont\@tocpagenum{#7}}}\par % the dotfill makes a dotted line across to the page number.
+        \nobreak
+        \endgroup
+      \fi}
 \makeatother
 
-%%%%%%%%%%%%%
-% abstract
-%%%%%%%%%%%%%
 
+%%%%%%%%%%%%%
+%
+%   Special pages
+%
+%%%%%%%%%%%%%
 \makeatletter
-\renewenvironment{abstract}{%
-    \ifx\maketitle\relax
-        \ClassWarning{\@classname}{Abstract should precede
-            \protect\maketitle\space in CSU Thesis document class; reported}%
-    \fi
-    \global\setbox\abstractbox=\vtop
-    {\fontsize{12}{14}\selectfont
-    \bgroup
-    \begin{center}\begin{singlespace}{\uppercase{Abstract}}\\ ~\\\end{singlespace}
-    {\MakeUppercase{\@title}}
-    \end{center}%blank line below here so the abstract starts indented.
+    %%%%%%%%%%%%%
+    % abstract
+    %%%%%%%%%%%%%
+    \renewenvironment{abstract}{%
+        \ifx\maketitle\relax
+            \ClassWarning{\@classname}{Abstract should precede
+                \protect\maketitle\space in CSU Thesis document class; reported}%
+        \fi
+        \global\setbox\abstractbox=\vtop
+        {%\fontsize{12}{14}\selectfont
+        \bgroup
+            \begin{center}
+                \begin{singlespace}
+                    {\normalsize\uppercase{Abstract}}\par
+                    \skip@ 3em \advance\skip@-\normalbaselineskip
+                    \vskip\skip@
+                \end{singlespace}
+                    {\MakeUppercase{\@title}}\par
+                    \skip@ 3em \advance\skip@-\normalbaselineskip
+                    \vskip\skip@
+            \end{center}%blank line below here so the abstract starts indented.
+        }
+        }{%
+            \endlist\egroup
+            \ifx\@setabstract\relax \@setabstracta \fi
+        }
+
+    %%%%%%%%%%%%%
+    % acknowledgements
+    %%%%%%%%%%%%%
+    \newbox\ackbox
+    \newenvironment{acknowledgments}{%
+      \ifx\maketitle\relax
+        \ClassWarning{\@classname}{Acknowledgments should precede
+          \protect\maketitle\space in the csuthesis class; reported}%
+      \fi
+      \global\setbox\ackbox=\vtop
+      {
+      \bgroup
+          \begin{center}
+              {\normalsize\uppercase{Acknowledgments}}
+          \end{center}
+          \par\skip@ 3em \advance\skip@-\normalbaselineskip
+          \vskip\skip@
+        }
+    }{
+      \endlist\egroup
+      \ifx\@setack\relax \@setacka \fi
     }
-}{%
-\endlist\egroup
-\ifx\@setabstract\relax \@setabstracta \fi
-}
-
-%%%%%%%%%%%%%
-% acknowledgements
-%%%%%%%%%%%%%
-\newbox\ackbox
-\newenvironment{acknowledgments}{%
-  \ifx\maketitle\relax
-    \ClassWarning{\@classname}{Acknowledgments should precede
-      \protect\maketitle\space in the csuthesis class; reported}%
-  \fi
-  \global\setbox\ackbox=\vtop
-  {\fontsize{12}{14}\selectfont
-  \bgroup
-    \begin{center}{\uppercase{Acknowledgments}}\end{center}
+    \def\@setack{\@setacka \global\let\@setack\relax}
+    \def\@setacka{%
+      \ifvoid\ackbox
+      \else
+        \skip@20\p@ \advance\skip@-\lastskip
+        \advance\skip@-\baselineskip \vskip\skip@
+        \box\ackbox
+        \prevdepth\z@ % because \abstractbox is a vtop
+      \fi
     }
-    
-}{
-  \endlist\egroup
-  \ifx\@setack\relax \@setacka \fi
-}
-\def\@setack{\@setacka \global\let\@setack\relax}
-\def\@setacka{%
-  \ifvoid\ackbox
-  \else
-    \skip@20\p@ \advance\skip@-\lastskip
-    \advance\skip@-\baselineskip \vskip\skip@
-    \box\ackbox
-    \prevdepth\z@ % because \abstractbox is a vtop
-  \fi
-}
 
-
-
-%%%%%%%%%%%%%
-% dedication
-%%%%%%%%%%%%%
-
-\newbox\dedbox
-\newenvironment{dedication}{%
-  \ifx\maketitle\relax
-    \ClassWarning{\@classname}{dedication should precede
-      \protect\maketitle\space in the csuthesis class; reported}%
-  \fi
-  \global\setbox\dedbox=\vtop
-  {\fontsize{12}{14}\selectfont
-  \bgroup
-    \begin{center}{\uppercase{Dedication}}\end{center}
+    %%%%%%%%%%%%%
+    % dedication
+    %%%%%%%%%%%%%
+    \newbox\dedbox
+    \newenvironment{dedication}{%
+      \ifx\maketitle\relax
+        \ClassWarning{\@classname}{dedication should precede
+          \protect\maketitle\space in the csuthesis class; reported}%
+      \fi
+      \global\setbox\dedbox=\vtop
+      {
+      \bgroup
+          \begin{center}
+              {\normalsize\uppercase{Dedication}}
+          \end{center}
+          \par\skip@ 3em \advance\skip@-\normalbaselineskip
+          \vskip\skip@
+        }
+    }{%
+      \endlist\egroup
+      \ifx\@setded\relax \@setdeda \fi
     }
-}{%
-  \endlist\egroup
-  \ifx\@setded\relax \@setdeda \fi
-}
-\def\@setded{\@setdeda \global\let\@setded\relax}
-\def\@setdeda{%
-  \ifvoid\dedbox
-  \else
-    \skip@20\p@ \advance\skip@-\lastskip
-    \advance\skip@-\baselineskip \vskip\skip@
-    \box\dedbox
-    \prevdepth\z@ % because \abstractbox is a vtop
-  \fi
-}
+    \def\@setded{\@setdeda \global\let\@setded\relax}
+    \def\@setdeda{%
+      \ifvoid\dedbox
+      \else
+        \skip@20\p@ \advance\skip@-\lastskip
+        \advance\skip@-\baselineskip \vskip\skip@
+        \box\dedbox
+        \prevdepth\z@ % because \abstractbox is a vtop
+      \fi
+    }
 
-
-
-%%%%%%%%%%%%%
-% Title Page
-%%%%%%%%%%%%%
-\renewcommand{\maketitle}{%
-    \begin{titlepage}
-        \begin{center}{\fontsize{12}{14}\selectfont
-            \ifphd
-                \MakeUppercase{Dissertation}
-            \else
-                \MakeUppercase{Thesis}
-            \fi
-            ~\vfill
-            {\MakeUppercase{\@title}}
-            ~\vfill
-            Submitted by \\
-            \ifx @author \@empty
-                \relax% Look, error handling!
-            \else
-                \@author \\
-            \fi
-
-            \ifx\@empty\@departmentname
-                \MakeUppercase{Department Name not defined}
-            \else
-                Department of \@departmentname
-            \fi
-
-            ~\vfill
-            In partial fulfillment of the requirements \\
-            \ifphd
-                For the Degree of Doctor of Philosophy \\ % The inconsistent capitalization between this line and the previous is required by the graduate school.
-            \else
-                \ifmasterofscience
-                    For the Degree of Master of Science \\
+    %%%%%%%%%%%%%
+    % Title Page
+    %%%%%%%%%%%%%
+    \renewcommand{\maketitle}{%
+        \begin{titlepage}
+            \begin{center}{\fontsize{12}{14}\selectfont
+                \ifphd
+                    \MakeUppercase{Dissertation}
                 \else
-                    For the Degree of Master of the Arts \\
+                    \MakeUppercase{Thesis}
                 \fi
-            \fi
-            Colorado State University \\
-            Fort Collins, Colorado \\
-            \ifx\@gradterm\@empty
-                \MakeUppercase{gradterm not defined}
-            \else
-                \ifx\@gradyear\@empty
-                    \MakeUppercase{gradyear not defined}
+                ~\vfill
+                {\MakeUppercase{\@title}}
+                ~\vfill
+                Submitted by \\
+                \ifx @author \@empty
+                    \relax% Look, error handling!
                 \else
-                    \@gradterm~\@gradyear
+                    \@author \\
                 \fi
-            \fi
-            ~\vfill
-        }\end{center}
-        \begin{singlespace}{\fontsize{12}{14}\selectfont
-            \ifphd
-                Doctoral Committee:\\
-            \else
-                Master's Committee:\\
-            \fi
-            % blank line
-            \begin{tabbing}
-                \hspace*{0.5in}\=
-                % Indent, still left:
-                Advisor: \@advisor \\ \>
-                \ifx\@coadvisor\undefined
-                    \relax
+
+                \ifx\@empty\@departmentname
+                    \MakeUppercase{Department Name not defined}
                 \else
-                    Co-Advisor: \@coadvisor \\
+                    Department of \@departmentname
+                \fi
+
+                ~\vfill
+                In partial fulfillment of the requirements \\
+                \ifphd
+                    For the Degree of Doctor of Philosophy \\ % The inconsistent capitalization between this line and the previous is required by the graduate school.
+                \else
+                    \ifmasterofscience
+                        For the Degree of Master of Science \\
+                    \else
+                        For the Degree of Master of the Arts \\
+                    \fi
+                \fi
+                Colorado State University \\
+                Fort Collins, Colorado \\
+                \ifx\@gradterm\@empty
+                    \MakeUppercase{gradterm not defined}
+                \else
+                    \ifx\@gradyear\@empty
+                        \MakeUppercase{gradyear not defined}
+                    \else
+                        \@gradterm~\@gradyear
+                    \fi
+                \fi
+                ~\vfill
+            }\end{center}
+            \begin{singlespace}{\fontsize{12}{14}\selectfont
+                \ifphd
+                    Doctoral Committee:\\
+                \else
+                    Master's Committee:\\
                 \fi
                 % blank line
-                ~\\ \> %
-                \@committee
-            \end{tabbing}
-        }\end{singlespace}
-    \end{titlepage}
-    \ifnocopyright
-        \relax
-    \else
-        % Make a copyright page
-        \thispagestyle{empty}
-        \vspace*{\fill}
-        \begin{center}
-            {\fontsize{12}{14}\selectfont Copyright by \@author~\@gradyear \\ All Rights Reserved}
-        \end{center}
-        \vspace*{\fill}
-        \clearpage
-    \fi
-    \setcounter{page}{2} %the copyright page is not assigned a number nor counted
-        \clearpage
-        \addcontentsline{toc}{chapter}{{Abstract}}
-        \unvbox\abstractbox
-    \ifvoid\ackbox
-    \else
-        \clearpage
-        \unvbox\ackbox
-        \addcontentsline{toc}{chapter}{{Acknowledgments}}
-    \fi
-    % Dedication
-    \ifvoid\dedbox
-    \else
-        \clearpage
-        \unvbox\dedbox
-        \addcontentsline{toc}{chapter}{{Dedication}}
-    \fi
-}
+                \begin{tabbing}
+                    \hspace*{0.5in}\=
+                    % Indent, still left:
+                    Advisor: \@advisor \\ \>
+                    \ifx\@coadvisor\undefined
+                        \relax
+                    \else
+                        Co-Advisor: \@coadvisor \\
+                    \fi
+                    % blank line
+                    ~\\ \> %
+                    \@committee
+                \end{tabbing}
+            }\end{singlespace}
+        \end{titlepage}
+        \ifnocopyright
+            \relax
+        \else
+            % Make a copyright page
+            \thispagestyle{empty}
+            \vspace*{\fill}
+            \begin{center}
+                {\fontsize{12}{14}\selectfont Copyright by \@author~\@gradyear \\ All Rights Reserved}
+            \end{center}
+            \vspace*{\fill}
+            \clearpage
+        \fi
+        \setcounter{page}{2} %the copyright page is not assigned a number nor counted
+            \clearpage
+            \addcontentsline{toc}{chapter}{{Abstract}}
+            \unvbox\abstractbox
+        \ifvoid\ackbox
+        \else
+            \clearpage
+            \unvbox\ackbox
+            \addcontentsline{toc}{chapter}{{Acknowledgments}}
+        \fi
+        % Dedication
+        \ifvoid\dedbox
+        \else
+            \clearpage
+            \unvbox\dedbox
+            \addcontentsline{toc}{chapter}{{Dedication}}
+        \fi
+    }
+
+\makeatother
 
 %%%%%%%%%%%%
-%% Appendix
-
-
+%
+% Appendix formatting
+%
+%%%%%%%%%%%%
 \newif\iffirstappendix
 \renewenvironment{appendix}[1][1]%
 {\vskip12pt\pagebreak[3]
@@ -491,7 +556,6 @@
 
 \long\def\appendixtitle#1{{\centering\bf\scshape #1\vskip1pt}{\addcontentsline{toc}{chapter}{\appendixname~\thechapter.~~ #1}}}
 
-\makeatother
 
 \RequirePackage{lineno}
 \newcommand*\patchAmsMathEnvironmentForLineno[1]{%
