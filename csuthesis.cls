@@ -242,8 +242,8 @@
 \newcommand*{\SkipTocEntry}{\addtocontents{toc}{\gobblefour}}
 \makeatletter
     %\@tocline{<level>}{<space above>}{<indent from left margin>}{<hang indent>}{<font attributes>}
-    \def\l@figure{\@tocline{0}{0pt}{-2.5mm}{11mm}{\ \ }}
-    \def\l@table{\@tocline{0}{0pt}{-2.5mm}{11mm}{\ \ }}
+    \def\l@figure{\@tocline{0}{0pt}{-1.5mm}{11mm}{\ \ }}
+    \def\l@table{\@tocline{0}{0pt}{-1.5mm}{11mm}{\ \ }}
     % adding more space between numbers and dots
     % http://mirrors.concertpass.com/tex-archive/macros/latex/contrib/tocloft/tocloft.pdf
     \renewcommand{\@pnumwidth}{2em}  % default value is 1.55 em
