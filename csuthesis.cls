@@ -9,7 +9,7 @@
 %   20121101 -- Leif Anderson in the CSU developed a crude foundation
 %               for the csuthesis class.
 %   20130101 -- Christopher Slocum greatly modified the work to fix some
-%               known problem and to change the class to conform to 
+%               known problem and to change the class to conform to
 %               American Meteorological Standards. The AMS LaTex template
 %               provided a starting point. AMS is referred to as ametsoc in the
 %               comments to avoid confusion.
@@ -24,6 +24,46 @@
 %   20180225 -- Christopher Slocum removed the geometry package, made
 %               page number spacing dynamic, fixed headings, and cleaned
 %               up the class file so that it is easier to follow
+%
+% Options for the documentclass
+% =============================
+% masters
+% -------
+%   including 'masters' will change 'Doctor of Philosophy'
+%   to 'Master of Science' for the degree
+%
+% 10pt, 11pt, 12pt
+% ----------------
+%   The title page, copyright page, and abstract are fixed at 12pt,
+%   but you can change the body to one of three options
+%
+% times
+% -----
+%   Adobe Systems Utopia (1989) is the default serif font. Using
+%   times will load mathptmx
+%
+% hyperref
+% --------
+%   enables inpage links (including the DOI). Can mess up the
+%   table of contents, so make sure to double check
+%
+% blue
+% ----
+%   makes the text for urls and references blue rather than black
+%   requires the hyperref option
+%
+% smallfoot
+% ---------
+%   makes the page number scriptsize rather than footnotesize
+%
+% linenumbers
+% -----------
+%   if you want linenumbers, you can have linenumbers
+%
+% nocopyright
+% -----------
+%   CSU now requires the copyright page. If this changes, nocopyright
+%   restores old format
 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{csuthesis}[2018/02/25 CSU thesis and disseration class]
@@ -69,8 +109,8 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%
 \makeatletter
-    \global \let \@author \@empty 
-    \global \let \@date \@empty 
+    \global \let \@author \@empty
+    \global \let \@date \@empty
     \global \let \@title \@empty
     \global \let \@departmentname \@empty
     \global \let \@gradterm \@empty
@@ -111,6 +151,7 @@
 \fi
 
 % Setting the page
+% Creates one inch margins around the edges of the document
 \pdfpagewidth 8.5in
 \pdfpageheight 11in
 \headheight 0pt
@@ -122,9 +163,19 @@
 \topmargin \dimexpr 1in -1in
 \textwidth \dimexpr \pdfpagewidth -2\oddsidemargin -2in
 \textheight \dimexpr \pdfpageheight -2\topmargin -2in
+% Penalties to control the behavior of orphans and widows
+% The higher the values, the more important it is for LaTeX
+% to follow the penalty. 150 to 500 are pretty high values and
+% 10000 is the maximum allowed value for the penalties.
+% See https://tex.stackexchange.com/a/51264 for more details
+% on penalty optins within LaTeX
 \clubpenalty=10000
 \widowpenalty=10000
-\raggedbottom
+% The penalties above handle how the bottom of the document appears for
+% the most part. \raggedbottom ends up mostly influencing footnote placement.
+% For this reason, I switched back to \flushbottom.
+%\raggedbottom
+\flushbottom
 
 % set page heading style (plain) and page numbering size
 \makeatletter
@@ -144,7 +195,7 @@
 \RequirePackage{graphicx}
 \RequirePackage{float}
 
-% math stuff
+% math and symbol packages
 \DeclareMathAlphabet{\CMcal}{OMS}{cmsy}{m}{n}
 \RequirePackage{amsmath}
 \RequirePackage{mathtools}
@@ -177,6 +228,7 @@
             urlcolor={black}
         }
     \fi
+    % This turns doi entries in the references to links
     \newcommand*{\doi}[1]{\href{http://dx.doi.org/\detokenize{#1}}{doi: \detokenize{#1}}}
 \fi
 
@@ -199,7 +251,6 @@
 \makeatletter
 \renewcommand{\contentsname}{Table of Contents}
 \renewcommand{\bibname}{\MakeUppercase{References}}
-
 
 %%%%%%%%
 %
@@ -226,14 +277,14 @@
         \normalsize\normalfont\centering
         \MakeUppercase{#1}\par
         \skip@ 3em \advance\skip@-\normalbaselineskip
-        \vskip\skip@ 
+        \vskip\skip@
     \endgroup}
 
 \def\@starttoc#1#2{%
   \begingroup
   \setTrue{#1}%
   \let\secdef\@gobbletwo \chapter
-  \let\@secnumber\@empty 
+  \let\@secnumber\@empty
   \ifx\contentsname#2%
   \else \@tocwrite{chapter}{#2}\fi
   \typeout{#2}\@xp\chaptermark\@xp{#2}%
@@ -481,6 +532,9 @@
                 \end{tabbing}
             }\end{singlespace}
         \end{titlepage}
+    %%%%%%%%%%%%%
+    % Copyright page
+    %%%%%%%%%%%%%
         \ifnocopyright
             \relax
         \else
@@ -493,6 +547,9 @@
             \vspace*{\fill}
             \clearpage
         \fi
+    %%%%%%%%%%%%%
+    % Add the Abstract, Acknowledgements, and Dedication pages to the Table of Contents
+    %%%%%%%%%%%%%
         \setcounter{page}{2} %the copyright page is not assigned a number nor counted
             \clearpage
             \addcontentsline{toc}{chapter}{{Abstract}}
@@ -521,8 +578,11 @@
 %%%%%%%%%%%%
 \newif\iffirstappendix
 \renewenvironment{appendix}[1][1]%
-{\vskip12pt\pagebreak[3]
+{\vskip0em\pagebreak[3]
     \ifthenelse{\equal{#1}{1}}%
+    %%%%%%%%%%%%%
+    % Single appendix
+    %%%%%%%%%%%%%
     {\setcounter{chapter}{0}% reset counter
         \renewcommand\thechapter{A}
         \renewcommand\theequation{\thechapter\arabic{equation}}%
@@ -536,8 +596,13 @@
         \renewcommand\thesection{\thechapter\arabic{section}}
         \renewcommand\thesubsection{\thechapter\arabic{subsection}}
         \begin{center}%
-        {\textnormal APPENDIX}%
-        \end{center}}
+            {\textnormal APPENDIX\vskip1em%
+        }
+        \end{center}
+    }
+    %%%%%%%%%%%%%
+    % Multiple appendices
+    %%%%%%%%%%%%%
     {
         \setcounter{chapter}{0}% reset counter
         \renewcommand\thechapter{#1}
@@ -550,20 +615,26 @@
         \renewcommand\thesection{\thechapter\arabic{section}}
         \renewcommand\thesubsection{\thechapter\arabic{subsection}}
         \begin{center}%
-            {\textnormal APPENDIX \thechapter}% 
-        \end{center}}
+            {\textnormal APPENDIX \thechapter\vskip1em}%
+        \end{center}
+    }
 }%
+% Appendix title formatting and table of contents entry
+\long\def\appendixtitle#1{{\centering\bf\scshape #1\vskip1em}{\addcontentsline{toc}{chapter}{\appendixname~\thechapter.~~ #1}}}
 
-\long\def\appendixtitle#1{{\centering\bf\scshape #1\vskip1pt}{\addcontentsline{toc}{chapter}{\appendixname~\thechapter.~~ #1}}}
 
-
+%%%%%%%%%%%%
+%
+% Line number formatting (optional)
+%
+%%%%%%%%%%%%
 \RequirePackage{lineno}
 \newcommand*\patchAmsMathEnvironmentForLineno[1]{%
   \expandafter\let\csname old#1\expandafter\endcsname\csname #1\endcsname
   \expandafter\let\csname oldend#1\expandafter\endcsname\csname end#1\endcsname
   \renewenvironment{#1}%
      {\linenomath\csname old#1\endcsname}%
-     {\csname oldend#1\endcsname\endlinenomath}}% 
+     {\csname oldend#1\endcsname\endlinenomath}}%
 \newcommand*\patchBothAmsMathEnvironmentsForLineno[1]{%
   \patchAmsMathEnvironmentForLineno{#1}%
   \patchAmsMathEnvironmentForLineno{#1*}}%
