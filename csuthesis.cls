@@ -375,12 +375,10 @@
         {
         \bgroup
             \begin{center}
-                \begin{singlespace}
-                    {\normalsize\uppercase{Abstract}}
-                    \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
-                \end{singlespace}
-                    {\MakeUppercase{\@title}}
-                    \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
+                \normalsize\uppercase{Abstract}
+                \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
+                \MakeUppercase{\@title}
+                \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
             \end{center}%blank line below here so the abstract starts indented.
         }
         }{%
