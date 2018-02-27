@@ -44,11 +44,6 @@
 %   Adobe Systems Utopia (1989) is the default serif font. Using
 %   times will load mathptmx
 %
-% hyperref
-% --------
-%   enables inpage links (including the DOI). Can mess up the
-%   table of contents, so make sure to double check
-%
 % blue
 % ----
 %   makes the text for urls and references blue rather than black
@@ -79,8 +74,6 @@
 \DeclareOption{masters}{\phdfalse}
 \newif\ifmasterofscience \masterofsciencetrue
 \DeclareOption{nonscience}{\masterofsciencefalse}
-\newif\ifhyperref \hyperreffalse
-\DeclareOption{hyperref}{\hyperreftrue}
 \newif\ifblue \bluefalse
 \DeclareOption{blue}{\bluetrue}
 \newif\iftimes \timesfalse
@@ -213,26 +206,25 @@
 \bibpunct{(}{)}{;}{a}{}{,}
 \RequirePackage{url}
 \RequirePackage{xcolor}
-\ifhyperref
-    \RequirePackage[breaklinks=true]{hyperref}
-    \ifblue
-        \hypersetup{
-            colorlinks,
-            linkcolor={black},
-            citecolor={blue!80!black},
-            urlcolor={blue!80!black}
-        }
-    \else
-        \hypersetup{
-            colorlinks,
-            linkcolor={black},
-            citecolor={black},
-            urlcolor={black}
-        }
-    \fi
-    % This turns doi entries in the references to links
-    \newcommand*{\doi}[1]{\href{http://dx.doi.org/\detokenize{#1}}{doi: \detokenize{#1}}}
+\RequirePackage[breaklinks=true,hyperfigures=true,pdfpagelabels,pdfborder={0 0 0}]{hyperref}
+\RequirePackage{bookmark}
+\ifblue
+    \hypersetup{
+        colorlinks,
+        linkcolor={black},
+        citecolor={blue!80!black},
+        urlcolor={blue!80!black}
+    }
+\else
+    \hypersetup{
+        colorlinks,
+        linkcolor={black},
+        citecolor={black},
+        urlcolor={black}
+    }
 \fi
+% This turns doi entries in the references to links
+\newcommand*{\doi}[1]{\href{http://dx.doi.org/\detokenize{#1}}{doi: \detokenize{#1}}}
 
 \RequirePackage[pdftex]{lscape}
 
@@ -347,9 +339,9 @@
     \newcommand\numberprefix{}
     \def\numberline#1{\hb@xt@\@tempdima{\numberprefix #1\hfil}}
     %\@tocline{<level>}{<space above>}{<indent from left margin>}{<hang indent>}{<font attributes>}
-    \def\l@figure#1#2{\@tocline{0}{0pt plus5pt}{0pt}{4pc}{}%
+    \def\l@figure#1#2{\@tocline{0}{0pt}{0pt}{4pc}{}%
         {\renewcommand\numberprefix{\figurenametext~}#1}{#2}}
-    \def\l@table#1#2{\@tocline{0}{0pt plus5pt}{0pt}{4pc}{}%
+    \def\l@table#1#2{\@tocline{0}{0pt}{0pt}{4pc}{}%
         {\renewcommand\numberprefix{\tablenametext~}#1}{#2}}
     \renewcommand{\@pnumwidth}{1.55em}  % default value is 1.55 em
     \renewcommand{\@tocrmarg}{2.55em}  % default value is 2.55 em
@@ -434,6 +426,7 @@
     \renewcommand{\maketitle}{%
         \begin{titlepage}
             \begin{center}{\fontsize{12}{14}\selectfont
+                \pdfbookmark{\@title}{\@title}
                 \ifphd
                     \MakeUppercase{Dissertation}
                 \else
@@ -509,6 +502,7 @@
         \else
             % Make a copyright page
             \thispagestyle{empty}
+            \pdfbookmark{Copyright}{Copyright}
             \vspace*{\fill}
             \begin{center}
                 {\fontsize{12}{14}\selectfont Copyright by \@author~\@gradyear \\ All Rights Reserved}
@@ -521,11 +515,13 @@
     %%%%%%%%%%%%%
         \setcounter{page}{2} %the copyright page is not assigned a number nor counted
             \clearpage
+            \phantomsection
             \addcontentsline{toc}{chapter}{{Abstract}}
             \unvbox\abstractbox
         \ifvoid\ackbox
         \else
             \clearpage
+            \phantomsection
             \unvbox\ackbox
             \addcontentsline{toc}{chapter}{{Acknowledgments}}
         \fi
@@ -533,6 +529,7 @@
         \ifvoid\dedbox
         \else
             \clearpage
+            \phantomsection
             \unvbox\dedbox
             \addcontentsline{toc}{chapter}{{Dedication}}
         \fi
