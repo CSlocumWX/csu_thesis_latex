@@ -24,6 +24,8 @@
 %   20180225 -- Christopher Slocum removed the geometry package, made
 %               page number spacing dynamic, fixed headings, and cleaned
 %               up the class file so that it is easier to follow
+%   20180226 -- Christopher Slocum rewrote chapter headings, changed the LoT
+%               and LoF formatting, and changed committee block to new style
 %
 % Options for the documentclass
 % =============================
@@ -117,7 +119,7 @@
     \global \let \@gradyear \@empty
     \global \let \@advisor \@empty
 
-    \newcommand{\committee}[1]{\gdef\@committee{\xandlist{\\ \> }{ and }{\\ \>}{#1}}}
+    \newcommand{\committee}[1]{\gdef\@committee{\xandlist{\\ \> }{\\ \>}{\\ \>}{#1}}}
     \newcommand{\@committee}{\@latex@warning@no@line{No \noexpand\committee given}}
 
     \def\author#1{\gdef\@author{#1}}
@@ -233,78 +235,35 @@
 \fi
 
 \RequirePackage[pdftex]{lscape}
-%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%  customizing the table of contents appearance excluding the heading
-%
-%%%%%%%%%%%%%%%%%%%%%%
-\DeclareRobustCommand{\gobblefour}[4]{}
-\newcommand*{\SkipTocEntry}{\addtocontents{toc}{\gobblefour}}
-\makeatletter
-    %\@tocline{<level>}{<space above>}{<indent from left margin>}{<hang indent>}{<font attributes>}
-    \def\l@figure{\@tocline{0}{0pt}{-1.5mm}{11mm}{\ \ }}
-    \def\l@table{\@tocline{0}{0pt}{-1.5mm}{11mm}{\ \ }}
-    % adding more space between numbers and dots
-    % http://mirrors.concertpass.com/tex-archive/macros/latex/contrib/tocloft/tocloft.pdf
-    \renewcommand{\@pnumwidth}{2em}  % default value is 1.55 em
-    \renewcommand{\@tocrmarg}{2.55em}  % default value is 2.55 em
-\makeatletter
-\renewcommand{\contentsname}{Table of Contents}
-\renewcommand{\bibname}{\MakeUppercase{References}}
 
 %%%%%%%%
 %
 % Chapter "Primary" Headings
 %
 %%%%%%%%
-\def\@makechapterhead#1{\global\topskip 0.5in\relax
-  \begingroup
-    \normalsize\normalfont\scshape\bfseries\centering
-    \ifnum\c@secnumdepth>\m@ne
-      \leavevmode \hskip-\leftskip
-      \rlap{\vbox to\z@{\vss
-          \centerline{\normalsize\mdseries
-          \uppercase\@xp{\chaptername}\enspace\thechapter}
-          \vskip 3em}}
-     \hskip\leftskip\fi
-     \normalsize#1\par
-  \endgroup
-  \skip@ 3em \advance\skip@-\normalbaselineskip
-  \vskip\skip@ }
-
-\def\@makescsuhead#1{\global\topskip 0pc\relax
-    \begingroup
-        \normalsize\normalfont\centering
-        \MakeUppercase{#1}\par
-        \skip@ 3em \advance\skip@-\normalbaselineskip
-        \vskip\skip@
-    \endgroup}
-
-\def\@starttoc#1#2{%
-  \begingroup
-  \setTrue{#1}%
-  \let\secdef\@gobbletwo \chapter
-  \let\@secnumber\@empty
-  \ifx\contentsname#2%
-  \else \@tocwrite{chapter}{#2}\fi
-  \typeout{#2}\@xp\chaptermark\@xp{#2}%
-  \@makescsuhead{#2}\@afterheading
-  \parskip\z@skip
-  \makeatletter
-  \@input{\jobname.#1}%
-  \if@filesw
-  \@xp\newwrite\csname tf@#1\endcsname
-    \immediate\@xp\openout\csname tf@#1\endcsname \jobname.#1\relax
-  \fi
-  \global\@nobreakfalse \endgroup
-  \newpage
-}
+\makeatletter
+% for \chapter{}
+\def\@makechapterhead#1{
+    \begin{center}
+        \uppercase\@xp{\chaptername}\enspace\thechapter
+        \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
+        \normalsize\normalfont\scshape\bfseries{#1}
+        \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
+    \end{center}}
+% for \chapter*{} -- note really used in a thesis
+\def\@makeschapterhead#1{
+    \begin{center}
+        \normalsize\normalfont\scshape\bfseries{#1}
+        \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
+    \end{center}}
+\makeatother
 
 %%%%%%%%
 %
 % Section, subsection, and subsubsection headings
 %
 %%%%%%%%
+\makeatletter
 \def\section{\@startsection{section}{1}%
   \z@{.7\linespacing\@plus\linespacing}{.5\linespacing}%
   {\normalfont\scshape}}
@@ -314,15 +273,19 @@
 \def\subsubsection{\@startsection{subsubsection}{3}%
   \z@{.7\linespacing\@plus\linespacing}{.5\linespacing}%
   {\normalfont\it}}
+\makeatother
 
 %%%%%%%%
 %
 % Figure and table formatting
 %
 %%%%%%%%
+\makeatletter
 % AMS style for Figures and Tables
-\renewcommand{\figurename}{\textsc{Fig.}}
-\renewcommand{\tablename}{\textsc{Table}}
+\newcommand{\figurenametext}{Fig.}
+\newcommand{\tablenametext}{Table}
+\renewcommand{\figurename}{\textsc{\figurenametext}}
+\renewcommand{\tablename}{\textsc{\tablenametext}}
 \renewcommand{\thefigure}{\arabic{figure}}
 \renewcommand{\thetable}{\arabic{table}}
 \renewcommand{\appendixname}{Appendix}
@@ -337,28 +300,62 @@
 \numberwithin{equation}{chapter}
 
 \renewcommand\bibsection{\centering\bibname\addcontentsline{toc}{chapter}{References} ~\\ ~\\}{}
-
-%dotted line for TOC.  This is the definition of \@tocline, copied out of amsbook.
-\makeatletter
-    \def\@tocline#1#2#3#4#5#6#7{\relax
-      \ifnum #1>\c@tocdepth % then omit
-      \else
-        \par \addpenalty\@secpenalty\addvspace{#2}%
-        \begingroup \hyphenpenalty\@M
-        \@ifempty{#4}{%
-          \@tempdima\csname r@tocindent\number#1\endcsname\relax
-        }{%
-          \@tempdima#4\relax
-        }%
-        \parindent\z@ \leftskip#3\relax \advance\leftskip\@tempdima\relax
-        \rightskip\@pnumwidth plus 4em \parfillskip-\@pnumwidth
-        #5\leavevmode\hskip-\@tempdima #6\nobreak\relax
-        \dotfill\hbox to\@pnumwidth{{\normalfont\@tocpagenum{#7}}}\par % the dotfill makes a dotted line across to the page number.
-        \nobreak
-        \endgroup
-      \fi}
 \makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  customizing the table of contents appearance excluding the heading
+%
+%%%%%%%%%%%%%%%%%%%%%%
+\DeclareRobustCommand{\gobblefour}[4]{}
+\newcommand*{\SkipTocEntry}{\addtocontents{toc}{\gobblefour}}
+\usepackage{etoolbox}
+\makeatletter
+    % toc, lot, lof heading formatting
+    \def\@makescsuhead#1{
+        \begin{center}
+            \normalsize\normalfont
+            \MakeUppercase{#1}
+            \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
+        \end{center}}
 
+    \def\@starttoc#1#2{%
+      \begingroup
+      \setTrue{#1}%
+      \let\secdef\@gobbletwo \chapter
+      \let\@secnumber\@empty
+      \ifx\contentsname#2%
+      \else \@tocwrite{chapter}{#2}\fi
+      \typeout{#2}\@xp\chaptermark\@xp{#2}%
+      \@makescsuhead{#2}\@afterheading
+      \parskip\z@skip
+      \makeatletter
+      \@input{\jobname.#1}%
+      \if@filesw
+      \@xp\newwrite\csname tf@#1\endcsname
+        \immediate\@xp\openout\csname tf@#1\endcsname \jobname.#1\relax
+      \fi
+      \global\@nobreakfalse \endgroup
+      \newpage
+    }
+
+    % Leader dots in toc
+    \patchcmd{\@tocline}
+      {\hfil}
+      {\leaders\hbox{\,.\,}\hfil}
+      {}{}
+    % Insert "Figure" or "Table" in "list of" entries
+    \newcommand\numberprefix{}
+    \def\numberline#1{\hb@xt@\@tempdima{\numberprefix #1\hfil}}
+    %\@tocline{<level>}{<space above>}{<indent from left margin>}{<hang indent>}{<font attributes>}
+    \def\l@figure#1#2{\@tocline{0}{0pt plus5pt}{0pt}{4pc}{}%
+        {\renewcommand\numberprefix{\figurenametext~}#1}{#2}}
+    \def\l@table#1#2{\@tocline{0}{0pt plus5pt}{0pt}{4pc}{}%
+        {\renewcommand\numberprefix{\tablenametext~}#1}{#2}}
+    \renewcommand{\@pnumwidth}{1.55em}  % default value is 1.55 em
+    \renewcommand{\@tocrmarg}{2.55em}  % default value is 2.55 em
+\makeatother
+\renewcommand{\contentsname}{Table of Contents}
+\renewcommand{\bibname}{\MakeUppercase{References}}
 
 %%%%%%%%%%%%%
 %
@@ -375,17 +372,15 @@
                 \protect\maketitle\space in CSU Thesis document class; reported}%
         \fi
         \global\setbox\abstractbox=\vtop
-        {%\fontsize{12}{14}\selectfont
+        {
         \bgroup
             \begin{center}
                 \begin{singlespace}
-                    {\normalsize\uppercase{Abstract}}\par
-                    \skip@ 3em \advance\skip@-\normalbaselineskip
-                    \vskip\skip@
+                    {\normalsize\uppercase{Abstract}}
+                    \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
                 \end{singlespace}
-                    {\MakeUppercase{\@title}}\par
-                    \skip@ 3em \advance\skip@-\normalbaselineskip
-                    \vskip\skip@
+                    {\MakeUppercase{\@title}}
+                    \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
             \end{center}%blank line below here so the abstract starts indented.
         }
         }{%
@@ -404,26 +399,14 @@
       \fi
       \global\setbox\ackbox=\vtop
       {
-      \bgroup
+        \bgroup
           \begin{center}
               {\normalsize\uppercase{Acknowledgments}}
           \end{center}
-          \par\skip@ 3em \advance\skip@-\normalbaselineskip
-          \vskip\skip@
+          \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
         }
     }{
       \endlist\egroup
-      \ifx\@setack\relax \@setacka \fi
-    }
-    \def\@setack{\@setacka \global\let\@setack\relax}
-    \def\@setacka{%
-      \ifvoid\ackbox
-      \else
-        \skip@20\p@ \advance\skip@-\lastskip
-        \advance\skip@-\baselineskip \vskip\skip@
-        \box\ackbox
-        \prevdepth\z@ % because \abstractbox is a vtop
-      \fi
     }
 
     %%%%%%%%%%%%%
@@ -441,22 +424,10 @@
           \begin{center}
               {\normalsize\uppercase{Dedication}}
           \end{center}
-          \par\skip@ 3em \advance\skip@-\normalbaselineskip
-          \vskip\skip@
+          \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
         }
     }{%
       \endlist\egroup
-      \ifx\@setded\relax \@setdeda \fi
-    }
-    \def\@setded{\@setdeda \global\let\@setded\relax}
-    \def\@setdeda{%
-      \ifvoid\dedbox
-      \else
-        \skip@20\p@ \advance\skip@-\lastskip
-        \advance\skip@-\baselineskip \vskip\skip@
-        \box\dedbox
-        \prevdepth\z@ % because \abstractbox is a vtop
-      \fi
     }
 
     %%%%%%%%%%%%%
@@ -489,7 +460,7 @@
                 ~\vfill
                 In partial fulfillment of the requirements \\
                 \ifphd
-                    For the Degree of Doctor of Philosophy \\ % The inconsistent capitalization between this line and the previous is required by the graduate school.
+                    For the Degree of Doctor of Philosophy \\
                 \else
                     \ifmasterofscience
                         For the Degree of Master of Science \\
