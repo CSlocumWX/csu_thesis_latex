@@ -26,6 +26,7 @@
 %               up the class file so that it is easier to follow
 %   20180226 -- Christopher Slocum rewrote chapter headings, changed the LoT
 %               and LoF formatting, and changed committee block to new style
+%   20180103 -- Chris Slocum removed lineno package and changed subheadings
 %
 % Options for the documentclass
 % =============================
@@ -53,22 +54,14 @@
 % ---------
 %   makes the page number scriptsize rather than footnotesize
 %
-% linenumbers
-% -----------
-%   if you want linenumbers, you can have linenumbers
-%
 % nocopyright
 % -----------
 %   CSU now requires the copyright page. If this changes, nocopyright
 %   restores old format
-
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{csuthesis}[2018/02/25 CSU thesis and disseration class]
-
 %%%%%%%%%%%%%%%%%%%%%%%%
-%
 %   Document class options
-%
 %%%%%%%%%%%%%%%%%%%%%%
 \newif\ifphd \phdtrue
 \DeclareOption{masters}{\phdfalse}
@@ -80,8 +73,6 @@
 \DeclareOption{times}{\timestrue}
 \newif\ifsmallfoot \smallfootfalse
 \DeclareOption{smallfoot}{\smallfoottrue}
-\newif\iflinenumbers \linenumbersfalse
-\DeclareOption{linenumbers}{\linenumberstrue}
 \newif\ifnocopyright \nocopyrightfalse
 \DeclareOption{nocopyright}{\nocopyrighttrue}
 \def\@@ptsize{12pt}
@@ -91,17 +82,13 @@
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{amsbook}}
 \ProcessOptions\relax
 %%%%%%%%%%%%%%%%%%%%%%%%
-%
 %   Load amsbook class
-%
 %%%%%%%%%%%%%%%%%%%%%%%%
 \LoadClass[\@@ptsize, oneside, reqno]{amsbook}  % amsbook provides the foundation
                                                 % for the thesis class. amsbook does
                                                 % not play nice with some LaTeX commands :(
 %%%%%%%%%%%%%%%%%%%%%%%%
-%
 %    parse preamble input
-%
 %%%%%%%%%%%%%%%%%%%%%%%%
 \makeatletter
     \global \let \@author \@empty
@@ -111,10 +98,8 @@
     \global \let \@gradterm \@empty
     \global \let \@gradyear \@empty
     \global \let \@advisor \@empty
-
     \newcommand{\committee}[1]{\gdef\@committee{\xandlist{\\ \> }{\\ \>}{\\ \>}{#1}}}
     \newcommand{\@committee}{\@latex@warning@no@line{No \noexpand\committee given}}
-
     \def\author#1{\gdef\@author{#1}}
     \def\@author{\@latex@warning@no@line{No \noexpand\author given}}
     \def\departmentname#1{\gdef\@departmentname{#1}}
@@ -123,11 +108,8 @@
     \def\advisor#1{\gdef\@advisor{#1}}
     \def\coadvisor#1{\gdef\@coadvisor{#1}}
 \makeatother
-
 %%%%%%%%%%%%%%%%%%%%%%%%
-%
 %   Page layout/formatting
-%
 %%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage{indentfirst}
 \RequirePackage[doublespacing]{setspace}
@@ -163,14 +145,15 @@
 % to follow the penalty. 150 to 500 are pretty high values and
 % 10000 is the maximum allowed value for the penalties.
 % See https://tex.stackexchange.com/a/51264 for more details
-% on penalty optins within LaTeX
-\clubpenalty=10000
-\widowpenalty=10000
-% The penalties above handle how the bottom of the document appears for
-% the most part. \raggedbottom ends up mostly influencing footnote placement.
-% For this reason, I switched back to \flushbottom.
-%\raggedbottom
-\flushbottom
+% on penalty options within LaTeX
+\clubpenalty=10000  % extra penalty for breaking after first line of a paragraph
+\widowpenalty=10000  % extra penalty for breaking before last line of a paragraph
+\displaywidowpenalty=10000  % extra penalty for breaking before last line before a display math
+\brokenpenalty=10000  % extra penalty for page breaking after a hyphenated line
+% Because Word does not fulfill the flush bottom requirement, this
+% can be relaxed. However, \raggedbottom negatively impacts the
+% footer. Instead, we use footmisc
+\usepackage[bottom]{footmisc}
 
 % set page heading style (plain) and page numbering size
 \makeatletter
@@ -225,13 +208,9 @@
 \fi
 % This turns doi entries in the references to links
 \newcommand*{\doi}[1]{\href{http://dx.doi.org/\detokenize{#1}}{doi: \detokenize{#1}}}
-
 \RequirePackage[pdftex]{lscape}
-
 %%%%%%%%
-%
 % Chapter "Primary" Headings
-%
 %%%%%%%%
 \makeatletter
 % for \chapter{}
@@ -249,28 +228,23 @@
         \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
     \end{center}}
 \makeatother
-
 %%%%%%%%
-%
 % Section, subsection, and subsubsection headings
-%
 %%%%%%%%
+\usepackage[compact]{titlesec}
 \makeatletter
-\def\section{\@startsection{section}{1}%
-  \z@{.7\linespacing\@plus\linespacing}{.5\linespacing}%
-  {\normalfont\scshape}}
-\def\subsection{\@startsection{subsection}{2}%
-  \z@{.7\linespacing\@plus\linespacing}{.5\linespacing}%
-  {\normalfont\it}}
-\def\subsubsection{\@startsection{subsubsection}{3}%
-  \z@{.7\linespacing\@plus\linespacing}{.5\linespacing}%
-  {\normalfont\it}}
+    % section
+    \titleformat{\section}{\normalfont\scshape}{\thesection}{1em}{}
+    \titlespacing{\section}{0pt}{1em}{*0}
+    % subsection
+    \titleformat{\subsection}{\normalfont\it}{\thesubsection}{1em}{}
+    \titlespacing{\subsection}{0pt}{*0}{*0}
+    % subsubsection
+    \titleformat{\subsubsection}{\normalfont\scshape}{\thesubsubsection}{1em}{}
+    \titlespacing{\subsubsection}{0pt}{*0}{*0}
 \makeatother
-
 %%%%%%%%
-%
 % Figure and table formatting
-%
 %%%%%%%%
 \makeatletter
 % AMS style for Figures and Tables
@@ -290,13 +264,10 @@
 \numberwithin{figure}{chapter}
 \numberwithin{section}{chapter}
 \numberwithin{equation}{chapter}
-
 \renewcommand\bibsection{\centering\bibname\addcontentsline{toc}{chapter}{References} ~\\ ~\\}{}
 \makeatother
 %%%%%%%%%%%%%%%%%%%%%%%%
-%
 %  customizing the table of contents appearance excluding the heading
-%
 %%%%%%%%%%%%%%%%%%%%%%
 \DeclareRobustCommand{\gobblefour}[4]{}
 \newcommand*{\SkipTocEntry}{\addtocontents{toc}{\gobblefour}}
@@ -329,7 +300,6 @@
       \global\@nobreakfalse \endgroup
       \newpage
     }
-
     % Leader dots in toc
     \patchcmd{\@tocline}
       {\hfil}
@@ -348,11 +318,8 @@
 \makeatother
 \renewcommand{\contentsname}{Table of Contents}
 \renewcommand{\bibname}{\MakeUppercase{References}}
-
 %%%%%%%%%%%%%
-%
 %   Special pages
-%
 %%%%%%%%%%%%%
 \makeatletter
     %%%%%%%%%%%%%
@@ -377,9 +344,8 @@
             \endlist\egroup
             \ifx\@setabstract\relax \@setabstracta \fi
         }
-
     %%%%%%%%%%%%%
-    % acknowledgements
+    % acknowledgments
     %%%%%%%%%%%%%
     \newbox\ackbox
     \newenvironment{acknowledgments}{%
@@ -398,7 +364,6 @@
     }{
       \endlist\egroup
     }
-
     %%%%%%%%%%%%%
     % dedication
     %%%%%%%%%%%%%
@@ -419,13 +384,12 @@
     }{%
       \endlist\egroup
     }
-
     %%%%%%%%%%%%%
     % Title Page
     %%%%%%%%%%%%%
     \renewcommand{\maketitle}{%
         \begin{titlepage}
-            \begin{center}{\fontsize{12}{14}\selectfont
+            \begin{center}{\normalsize
                 \pdfbookmark{\@title}{\@title}
                 \ifphd
                     \MakeUppercase{Dissertation}
@@ -472,7 +436,7 @@
                 \fi
                 ~\vfill
             }\end{center}
-            \begin{singlespace}{\fontsize{12}{14}\selectfont
+            \begin{singlespace}{\normalsize
                 \ifphd
                     Doctoral Committee:\\
                 \else
@@ -505,7 +469,7 @@
             \pdfbookmark{Copyright}{Copyright}
             \vspace*{\fill}
             \begin{center}
-                {\fontsize{12}{14}\selectfont Copyright by \@author~\@gradyear \\ All Rights Reserved}
+                {\normalsize Copyright by \@author~\@gradyear \\ All Rights Reserved}
             \end{center}
             \vspace*{\fill}
             \clearpage
@@ -534,13 +498,9 @@
             \addcontentsline{toc}{chapter}{{Dedication}}
         \fi
     }
-
 \makeatother
-
 %%%%%%%%%%%%
-%
 % Appendix formatting
-%
 %%%%%%%%%%%%
 \newif\iffirstappendix
 \renewenvironment{appendix}[1][1]%
@@ -587,32 +547,3 @@
 }%
 % Appendix title formatting and table of contents entry
 \long\def\appendixtitle#1{{\centering\bf\scshape #1\vskip1em}{\addcontentsline{toc}{chapter}{\appendixname~\thechapter.~~ #1}}}
-
-
-%%%%%%%%%%%%
-%
-% Line number formatting (optional)
-%
-%%%%%%%%%%%%
-\RequirePackage{lineno}
-\newcommand*\patchAmsMathEnvironmentForLineno[1]{%
-  \expandafter\let\csname old#1\expandafter\endcsname\csname #1\endcsname
-  \expandafter\let\csname oldend#1\expandafter\endcsname\csname end#1\endcsname
-  \renewenvironment{#1}%
-     {\linenomath\csname old#1\endcsname}%
-     {\csname oldend#1\endcsname\endlinenomath}}%
-\newcommand*\patchBothAmsMathEnvironmentsForLineno[1]{%
-  \patchAmsMathEnvironmentForLineno{#1}%
-  \patchAmsMathEnvironmentForLineno{#1*}}%
-\AtBeginDocument{%
-\patchBothAmsMathEnvironmentsForLineno{equation}%
-\patchBothAmsMathEnvironmentsForLineno{align}%
-\patchBothAmsMathEnvironmentsForLineno{flalign}%
-\patchBothAmsMathEnvironmentsForLineno{alignat}%
-\patchBothAmsMathEnvironmentsForLineno{gather}%
-\patchBothAmsMathEnvironmentsForLineno{multline}%
-\patchBothAmsMathEnvironmentsForLineno{eqnarray}%
-}
-\iflinenumbers
-    \linenumbers
-\fi
