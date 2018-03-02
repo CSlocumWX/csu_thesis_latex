@@ -20,7 +20,6 @@ is preferred.
  * **times** - [Adobe Systems Utopia (1989)](https://en.wikipedia.org/wiki/Utopia_(typeface)) is the default serif font. The `times` optional argument will load the `mathptmx` package. `mathptmx` is a GPL licensed serif font akin to Times New Roman ([Nimbus Roman No. 9 L](https://en.wikipedia.org/wiki/Nimbus_Roman_No._9_L)).
  * **blue** - `hyperref` is automatically imported, but all urls and references are displayed in black. `blue` makes the text for urls and references blue rather than black (assumes that hyperref is used)
  * **smallfoot** - makes the page number `\scriptsize` rather than `\footnotesize`
- * **linenumbers** - if you want linenumbers, you can have linenumbers
  * **nocopyright** - CSU now requires the copyright page. If the style changes back, nocopyright restores older CSU format
 
 No guarantees are made that the template complies to current
