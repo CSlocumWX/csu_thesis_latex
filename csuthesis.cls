@@ -313,6 +313,7 @@
         {\renewcommand\numberprefix{\figurenametext~}#1}{#2}}
     \def\l@table#1#2{\@tocline{0}{0pt}{0pt}{4pc}{}%
         {\renewcommand\numberprefix{\tablenametext~}#1}{#2}}
+    \def\l@section{\@tocline{1}{0pt}{2pc}{2pc}{}}
     \renewcommand{\@pnumwidth}{1.55em}  % default value is 1.55 em
     \renewcommand{\@tocrmarg}{2.55em}  % default value is 2.55 em
 \makeatother
