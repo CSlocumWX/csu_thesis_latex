@@ -481,14 +481,14 @@
         \setcounter{page}{2} %the copyright page is not assigned a number nor counted
             \clearpage
             \phantomsection
-            \addcontentsline{toc}{chapter}{{Abstract}}
+            \addcontentsline{toc}{chapter}{\uppercase{Abstract}}
             \unvbox\abstractbox
         \ifvoid\ackbox
         \else
             \clearpage
             \phantomsection
             \unvbox\ackbox
-            \addcontentsline{toc}{chapter}{{Acknowledgments}}
+            \addcontentsline{toc}{chapter}{\uppercase{Acknowledgments}}
         \fi
         % Dedication
         \ifvoid\dedbox
@@ -496,7 +496,7 @@
             \clearpage
             \phantomsection
             \unvbox\dedbox
-            \addcontentsline{toc}{chapter}{{Dedication}}
+            \addcontentsline{toc}{chapter}{\uppercase{Dedication}}
         \fi
     }
 \makeatother
