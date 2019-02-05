@@ -80,3 +80,26 @@ Below is example LaTeX using the template. This example is similar to what is in
     \bibliography{references}}
 \end{document}
 ```
+
+### Journal papers in a thesis/dissertation
+To include published work in your thesis/dissertation, the Graduate School say that "any references to journal publications, authors, etc. on your chapter pages or major heading pages should be listed as a footnote." These footnotes must be numbered.
+
+To avoid having the footnote mark appearing in the Table of Contents, you need to trick LaTeX (there might be a better options, but this is the best solution I have found).
+
+1. create the new command with your chapter title before `\begin{document}`
+   ```latex
+   \newcommand{\mytitle}{Awesome chapter title}
+   ```
+2. replace your chapter title with the following LaTeX.
+   * Change `\mytitle` to the value used in 1)
+   * In `\ref`, create a unique label
+   * Set the `\addtocounter` value manually
+   * Change the `\label` in `\footnotetext` to the same value as `\ref`
+   * Add your text to the `\footnotetext`. Note, `\citet` and `\citep` may or may not work for you so you might just have to type the reference
+    ```latex
+    \chapter[\mytitle]{%
+        \for{toc}{\mytitle}\except{toc}{\mytitle\textsuperscript{\ref{foot:mytitle}}}%
+    }
+    \addtocounter{footnote}{1}
+    \footnotetext{\label{foot:mytitle}This chapter contains material from \protect\citet{}.}
+    ```
