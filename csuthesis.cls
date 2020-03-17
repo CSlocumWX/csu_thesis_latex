@@ -43,7 +43,7 @@
 % times
 % -----
 %   Adobe Systems Utopia (1989) is the default serif font. Using
-%   times will load mathptmx
+%   times will load newtxtext and newtxmath
 %
 % blue
 % ----
@@ -108,6 +108,7 @@
     \def\advisor#1{\gdef\@advisor{#1}}
     \def\coadvisor#1{\gdef\@coadvisor{#1}}
 \makeatother
+\RequirePackage{ifthen}
 %%%%%%%%%%%%%%%%%%%%%%%%
 %   Page layout/formatting
 %%%%%%%%%%%%%%%%%%%%%%
@@ -175,14 +176,15 @@
 
 % math and symbol packages
 \DeclareMathAlphabet{\CMcal}{OMS}{cmsy}{m}{n}
-\RequirePackage{amsmath}
+\RequirePackage{amsmath,amsfonts,bm}
 \RequirePackage{mathtools}
-\RequirePackage[utopia]{mathdesign}
-% you can pick your favorite font below,
-% but leave mathdesign because it loads other features
 \iftimes
-    \RequirePackage{mathptmx}
+    \RequirePackage{newtxtext}
+    \RequirePackage{newtxmath}
+\else
+    \RequirePackage[utopia]{mathdesign} 
 \fi
+
 
 % Citations and in page references
 \RequirePackage{natbib}
@@ -547,4 +549,6 @@
     }
 }%
 % Appendix title formatting and table of contents entry
-\long\def\appendixtitle#1{{\centering\bf\scshape #1\vskip1em}{\addcontentsline{toc}{chapter}{\appendixname~\thechapter.~~ #1}}}
+\makeatletter
+    \newcommand{\appendixtitle}[1]{{\centering\bf\scshape {#1}\vskip1em}{\addcontentsline{toc}{chapter}{\appendixname~\thechapter.~~ {#1}}}}
+\makeatother
