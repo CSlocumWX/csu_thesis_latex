@@ -27,6 +27,9 @@
 %   20180226 -- Christopher Slocum rewrote chapter headings, changed the LoT
 %               and LoF formatting, and changed committee block to new style
 %   20180103 -- Chris Slocum removed lineno package and changed subheadings
+%   20250323 -- Chris Slocum changed mathdesign with utopia option to 
+%               fourier to handle font embedding and encoding issues.
+%               Changed uppercase to MakeUppercase and updated hyperref.
 %
 % Options for the documentclass
 % =============================
@@ -59,7 +62,7 @@
 %   CSU now requires the copyright page. If this changes, nocopyright
 %   restores old format
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{csuthesis}[2018/02/25 CSU thesis and disseration class]
+\ProvidesClass{csuthesis}[2025/03/23 CSU thesis and disseration class]
 %%%%%%%%%%%%%%%%%%%%%%%%
 %   Document class options
 %%%%%%%%%%%%%%%%%%%%%%
@@ -182,17 +185,25 @@
     \RequirePackage{newtxtext}
     \RequirePackage{newtxmath}
 \else
-    \RequirePackage[utopia]{mathdesign} 
+    \RequirePackage{fourier}
+    \RequirePackage[T1]{fontenc}
 \fi
 
 
 % Citations and in page references
 \RequirePackage{natbib}
 \bibpunct{(}{)}{;}{a}{}{,}
-\RequirePackage{url}
+\RequirePackage{xurl}
 \RequirePackage{xcolor}
-\RequirePackage[breaklinks=true,hyperfigures=true,pdfpagelabels,pdfborder={0 0 0}]{hyperref}
+\RequirePackage{hyperref}
 \RequirePackage{bookmark}
+\hypersetup{
+    breaklinks=true,
+    bookmarks=true,
+    hyperfigures=true,
+    pdfpagelabels,
+    pdfborder={0 0 0},
+}
 \ifblue
     \hypersetup{
         colorlinks,
@@ -218,7 +229,7 @@
 % for \chapter{}
 \def\@makechapterhead#1{
     \begin{center}
-        \uppercase\@xp{\chaptername}\enspace\thechapter
+        \MakeUppercase{\@xp{\chaptername}\enspace\thechapter}
         \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
         \normalsize\normalfont\scshape\bfseries{#1}
         \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
@@ -337,7 +348,7 @@
         {
         \bgroup
             \begin{center}
-                \normalsize\uppercase{Abstract}
+                \normalsize\MakeUppercase{Abstract}
                 \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
                 \MakeUppercase{\@title}
                 \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
@@ -360,7 +371,7 @@
       {
         \bgroup
           \begin{center}
-              {\normalsize\uppercase{Acknowledgments}}
+              {\normalsize\MakeUppercase{Acknowledgments}}
           \end{center}
           \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
         }
@@ -380,7 +391,7 @@
       {
       \bgroup
           \begin{center}
-              {\normalsize\uppercase{Dedication}}
+              {\normalsize\MakeUppercase{Dedication}}
           \end{center}
           \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
         }
@@ -483,14 +494,14 @@
         \setcounter{page}{2} %the copyright page is not assigned a number nor counted
             \clearpage
             \phantomsection
-            \addcontentsline{toc}{chapter}{\uppercase{Abstract}}
+            \addcontentsline{toc}{chapter}{\MakeUppercase{Abstract}}
             \unvbox\abstractbox
         \ifvoid\ackbox
         \else
             \clearpage
             \phantomsection
             \unvbox\ackbox
-            \addcontentsline{toc}{chapter}{\uppercase{Acknowledgments}}
+            \addcontentsline{toc}{chapter}{\MakeUppercase{Acknowledgments}}
         \fi
         % Dedication
         \ifvoid\dedbox
@@ -498,7 +509,7 @@
             \clearpage
             \phantomsection
             \unvbox\dedbox
-            \addcontentsline{toc}{chapter}{\uppercase{Dedication}}
+            \addcontentsline{toc}{chapter}{\MakeUppercase{Dedication}}
         \fi
     }
 \makeatother
