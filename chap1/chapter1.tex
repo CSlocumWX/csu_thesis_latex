@@ -2,7 +2,7 @@
 Epic introduction goes here.\\
 
 Then you can do things like say as shown in Fig.\ \ref{fig:sample}
-or add citiations to epic papers like \cite{eliassen1951}. If we also decide
+or add citations to epic papers like \cite{eliassen1951}. If we also decide
 to add a table, we can add a reference to Table \ref{tab:lorenz}.
 
 \begin{table}[t]
@@ -10,6 +10,10 @@ to add a table, we can add a reference to Table \ref{tab:lorenz}.
   table layout from the AMS LaTeX template file.Table from Lorenz (1963).}
 \label{tab:lorenz}
 \begin{center}
+% Add tagging information to the table
+% See documentation to understand how how this works.
+% https://mirrors.mit.edu/CTAN/macros/latex/required/latex-lab/latex-lab-table.pdf
+\tagpdfsetup{table-header-rows={1}}
 \begin{tabular}{ccccrrcrc}
 \hline\hline
 $N$ & $X$ & $Y$ & $Z$\\
@@ -27,7 +31,7 @@ $N$ & $X$ & $Y$ & $Z$\\
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{./chap1/fig/sample_fig}
+    \includegraphics[width=0.75\textwidth,alt={This is alt text for a sine curve.}]{./chap1/fig/sample_fig}
     \caption[This caption is only in the LoF]{This is a sample figure with a
     sample caption.}
     \label{fig:sample}
