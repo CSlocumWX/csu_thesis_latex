@@ -7,6 +7,46 @@
 % No guarantees are made in regards to how well this template
 % conforms to the current library standards.
 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DocumentMetadata options
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DocumentMetadata is new to LaTeX. It increases accessibility and
+% helps PDF files meet PDF standards. Note that uses these does not
+% guarentee standard compliant PDF files. And, some features are still
+% experimental and might not work with your files.
+% The thesis class does not work with the following testphase options:
+%    * block
+%    * bib
+%    * float
+%    * math
+%    * sec
+% Given the list above, phase-III will not work until amsbook or
+% DocumentMetadata is updated to address issues.
+%
+% References:
+%   https://latex3.github.io/tagging-project/
+%   https://mirrors.mit.edu/CTAN/macros/latex/required/latex-lab/documentmetadata-support-doc.pdf
+%   https://mirrors.mit.edu/CTAN/macros/latex/required/latex-lab/latex-lab-table.pdf
+% . https://latex3.github.io/tagging-project/tagging-status/
+\DocumentMetadata
+{
+    lang = en-US,
+    pdfversion = 2.0,
+    pdfstandard = a-4f,
+    pdfstandard = x-6,
+    testphase ={
+        phase-II,
+        graphic,
+        marginpar,
+        minipage,
+        table,
+        title,
+        toc,
+        firstaid,
+    },
+    xmp = true,
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Options for the documentclass
 % -----------------------------
 % masters
