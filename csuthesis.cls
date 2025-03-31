@@ -6,7 +6,7 @@
 %   2009     -- Ankur Dave's creating your own LaTex class information
 %               under CC-GNU GPL version 2.0. Presumably, the taken from
 %               http://ankurdave.com/tex/
-%   20121101 -- Leif Anderson in the CSU developed a crude foundation
+%   20121101 -- Leif Anderson in the CSU developed a foundation
 %               for the csuthesis class.
 %   20130101 -- Christopher Slocum greatly modified the work to fix some
 %               known problem and to change the class to conform to
@@ -87,29 +87,30 @@
 %%%%%%%%%%%%%%%%%%%%%%%%
 %   Load amsbook class
 %%%%%%%%%%%%%%%%%%%%%%%%
-\LoadClass[\@@ptsize, oneside, reqno]{amsbook}  % amsbook provides the foundation
-                                                % for the thesis class. amsbook does
-                                                % not play nice with some LaTeX commands :(
+% amsbook provides the foundation
+% for the thesis class. amsbook does
+% not play nice with some LaTeX commands :(
+\LoadClass[\@@ptsize, oneside, reqno]{amsbook}
 %%%%%%%%%%%%%%%%%%%%%%%%
 %    parse preamble input
 %%%%%%%%%%%%%%%%%%%%%%%%
 \makeatletter
-    \global \let \@author \@empty
-    \global \let \@date \@empty
-    \global \let \@title \@empty
-    \global \let \@departmentname \@empty
-    \global \let \@gradterm \@empty
-    \global \let \@gradyear \@empty
-    \global \let \@advisor \@empty
-    \newcommand{\committee}[1]{\gdef\@committee{\xandlist{\\ \> }{\\ \>}{\\ \>}{#1}}}
-    \newcommand{\@committee}{\@latex@warning@no@line{No \noexpand\committee given}}
-    \def\author#1{\gdef\@author{#1}}
-    \def\@author{\@latex@warning@no@line{No \noexpand\author given}}
-    \def\departmentname#1{\gdef\@departmentname{#1}}
-    \def\gradterm#1{\gdef\@gradterm{#1}}
-    \def\gradyear#1{\gdef\@gradyear{#1}}
-    \def\advisor#1{\gdef\@advisor{#1}}
-    \def\coadvisor#1{\gdef\@coadvisor{#1}}
+\global \let \@author \@empty
+\global \let \@date \@empty
+\global \let \@title \@empty
+\global \let \@departmentname \@empty
+\global \let \@gradterm \@empty
+\global \let \@gradyear \@empty
+\global \let \@advisor \@empty
+\newcommand{\committee}[1]{\gdef\@committee{\xandlist{\\ \> }{\\ \>}{\\ \>}{#1}}}
+\newcommand{\@committee}{\@latex@warning@no@line{No \noexpand\committee given}}
+\def\author#1{\gdef\@author{#1}}
+\def\@author{\@latex@warning@no@line{No \noexpand\author given}}
+\def\departmentname#1{\gdef\@departmentname{#1}}
+\def\gradterm#1{\gdef\@gradterm{#1}}
+\def\gradyear#1{\gdef\@gradyear{#1}}
+\def\advisor#1{\gdef\@advisor{#1}}
+\def\coadvisor#1{\gdef\@coadvisor{#1}}
 \makeatother
 \RequirePackage{ifthen}
 \RequirePackage{iftex}
@@ -124,11 +125,11 @@
 \newlength{\footskipamount}
 \ifsmallfoot
     \makeatletter
-        \setlength{\footskipamount}{33pt minus \@@ptsize \relax}
+    \setlength{\footskipamount}{33pt minus \@@ptsize \relax}
     \makeatother
 \else
     \makeatletter
-        \setlength{\footskipamount}{33pt minus \@@ptsize \relax}
+    \setlength{\footskipamount}{33pt minus \@@ptsize \relax}
     \makeatother
 \fi
 
@@ -168,16 +169,16 @@
 
 % set page heading style (plain) and page numbering size
 \makeatletter
-    \def\ps@plain{\ps@empty
-     \def\@evenfoot{%
-       \normalfont\ifsmallfoot\scriptsize\else\footnotesize\fi
-       \centerline{\thepage}
-       }%
-     \def\@oddfoot{%
-       \normalfont\ifsmallfoot\scriptsize\else\footnotesize\fi
-       \centerline{\thepage}}
-    }
-    \pagestyle{plain}
+\def\ps@plain{\ps@empty
+    \def\@evenfoot{%
+        \normalfont\ifsmallfoot\scriptsize\else\footnotesize\fi
+        \centerline{\thepage}
+    }%
+    \def\@oddfoot{%
+        \normalfont\ifsmallfoot\scriptsize\else\footnotesize\fi
+        \centerline{\thepage}}
+}
+\pagestyle{plain}
 \makeatother
 
 % import graphics
@@ -202,8 +203,8 @@
 \bibpunct{(}{)}{;}{a}{}{,}
 \RequirePackage{xurl}
 \RequirePackage{xcolor}
-\RequirePackage{hyperref}
 \RequirePackage{bookmark}
+\RequirePackage{hyperref}
 \hypersetup{
     breaklinks=true,
     bookmarks=true,
@@ -253,15 +254,15 @@
 %%%%%%%%
 \RequirePackage[compact]{titlesec}
 \makeatletter
-    % section
-    \titleformat{\section}{\normalfont\scshape}{\thesection}{1em}{}
-    \titlespacing{\section}{0pt}{1em}{*0}
-    % subsection
-    \titleformat{\subsection}{\normalfont\it}{\thesubsection}{1em}{}
-    \titlespacing{\subsection}{0pt}{*0}{*0}
-    % subsubsection
-    \titleformat{\subsubsection}{\normalfont\scshape}{\thesubsubsection}{1em}{}
-    \titlespacing{\subsubsection}{0pt}{*0}{*0}
+% section
+\titleformat{\section}{\normalfont\scshape}{\thesection}{1em}{}
+\titlespacing{\section}{0pt}{1em}{*0}
+% subsection
+\titleformat{\subsection}{\normalfont\it}{\thesubsection}{1em}{}
+\titlespacing{\subsection}{0pt}{*0}{*0}
+% subsubsection
+\titleformat{\subsubsection}{\normalfont\scshape}{\thesubsubsection}{1em}{}
+\titlespacing{\subsubsection}{0pt}{*0}{*0}
 \makeatother
 %%%%%%%%
 % Figure and table formatting
@@ -293,49 +294,49 @@
 \newcommand*{\SkipTocEntry}{\addtocontents{toc}{\gobblefour}}
 \RequirePackage{etoolbox}
 \makeatletter
-    % toc, lot, lof heading formatting
-    \def\@makescsuhead#1{
-        \begin{center}
-            \normalsize\normalfont
-            \MakeUppercase{#1}
-            \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
-        \end{center}}
+% toc, lot, lof heading formatting
+\def\@makescsuhead#1{
+    \begin{center}
+        \normalsize\normalfont
+        \MakeUppercase{#1}
+        \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
+    \end{center}}
 
-    \def\@starttoc#1#2{%
-      \begingroup
-      \setTrue{#1}%
-      \let\secdef\@gobbletwo \chapter
-      \let\@secnumber\@empty
-      \ifx\contentsname#2%
-      \else \@tocwrite{chapter}{#2}\fi
-      \typeout{#2}\@xp\chaptermark\@xp{#2}%
-      \@makescsuhead{#2}\@afterheading
-      \parskip\z@skip
-      \makeatletter
-      \@input{\jobname.#1}%
-      \if@filesw
-      \@xp\newwrite\csname tf@#1\endcsname
+\def\@starttoc#1#2{%
+    \begingroup
+    \setTrue{#1}%
+    \let\secdef\@gobbletwo \chapter
+    \let\@secnumber\@empty
+    \ifx\contentsname#2%
+    \else \@tocwrite{chapter}{#2}\fi
+    \typeout{#2}\@xp\chaptermark\@xp{#2}%
+    \@makescsuhead{#2}\@afterheading
+    \parskip\z@skip
+    \makeatletter
+    \@input{\jobname.#1}%
+    \if@filesw
+        \@xp\newwrite\csname tf@#1\endcsname
         \immediate\@xp\openout\csname tf@#1\endcsname \jobname.#1\relax
-      \fi
-      \global\@nobreakfalse \endgroup
-      \newpage
-    }
-    % Leader dots in toc
-    \patchcmd{\@tocline}
-      {\hfil}
-      {\leaders\hbox{\,.\,}\hfil}
-      {}{}
-    % Insert "Figure" or "Table" in "list of" entries
-    \newcommand\numberprefix{}
-    \def\numberline#1{\hb@xt@\@tempdima{\numberprefix #1\hfil}}
-    %\@tocline{<level>}{<space above>}{<indent from left margin>}{<hang indent>}{<font attributes>}
-    \def\l@figure#1#2{\@tocline{0}{0pt}{0pt}{4pc}{}%
-        {\renewcommand\numberprefix{\figurenametext~}#1}{#2}}
-    \def\l@table#1#2{\@tocline{0}{0pt}{0pt}{4pc}{}%
-        {\renewcommand\numberprefix{\tablenametext~}#1}{#2}}
-    \def\l@section{\@tocline{1}{0pt}{2pc}{2pc}{}}
-    \renewcommand{\@pnumwidth}{1.55em}  % default value is 1.55 em
-    \renewcommand{\@tocrmarg}{2.55em}  % default value is 2.55 em
+    \fi
+    \global\@nobreakfalse \endgroup
+    \newpage
+}
+% Leader dots in toc
+\patchcmd{\@tocline}
+{\hfil}
+{\leaders\hbox{\,.\,}\hfil}
+{}{}
+% Insert "Figure" or "Table" in "list of" entries
+\newcommand\numberprefix{}
+\def\numberline#1{\hb@xt@\@tempdima{\numberprefix #1\hfil}}
+%\@tocline{<level>}{<space above>}{<indent from left margin>}{<hang indent>}{<font attributes>}
+\def\l@figure#1#2{\@tocline{0}{0pt}{0pt}{4pc}{}%
+    {\renewcommand\numberprefix{\figurenametext~}#1}{#2}}
+\def\l@table#1#2{\@tocline{0}{0pt}{0pt}{4pc}{}%
+    {\renewcommand\numberprefix{\tablenametext~}#1}{#2}}
+\def\l@section{\@tocline{1}{0pt}{2pc}{2pc}{}}
+\renewcommand{\@pnumwidth}{1.55em}  % default value is 1.55 em
+\renewcommand{\@tocrmarg}{2.55em}  % default value is 2.55 em
 \makeatother
 \renewcommand{\contentsname}{Table of Contents}
 \renewcommand{\bibname}{\MakeUppercase{References}}
@@ -343,74 +344,74 @@
 %   Special pages
 %%%%%%%%%%%%%
 \makeatletter
-    %%%%%%%%%%%%%
-    % abstract
-    %%%%%%%%%%%%%
-    \renewenvironment{abstract}{%
-        \ifx\maketitle\relax
-            \ClassWarning{\@classname}{Abstract should precede
-                \protect\maketitle\space in CSU Thesis document class; reported}%
-        \fi
-        \global\setbox\abstractbox=\vtop
-        {
+%%%%%%%%%%%%%
+% abstract
+%%%%%%%%%%%%%
+\renewenvironment{abstract}{%
+    \ifx\maketitle\relax
+        \ClassWarning{\@classname}{Abstract should precede
+            \protect\maketitle\space in CSU Thesis document class; reported}%
+    \fi
+    \global\setbox\abstractbox=\vtop
+    {
         \bgroup
-            \begin{center}
-                \normalsize\MakeUppercase{Abstract}
-                \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
-                \MakeUppercase{\@title}
-                \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
-            \end{center}%blank line below here so the abstract starts indented.
-        }
-        }{%
-            \endlist\egroup
-            \ifx\@setabstract\relax \@setabstracta \fi
-        }
-    %%%%%%%%%%%%%
-    % acknowledgments
-    %%%%%%%%%%%%%
-    \newbox\ackbox
-    \newenvironment{acknowledgments}{%
-      \ifx\maketitle\relax
+        \begin{center}
+            \normalsize\MakeUppercase{Abstract}
+            \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
+            \MakeUppercase{\@title}
+            \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
+        \end{center}%blank line below here so the abstract starts indented.
+    }
+}{%
+    \endlist\egroup
+    \ifx\@setabstract\relax \@setabstracta \fi
+}
+%%%%%%%%%%%%%
+% acknowledgments
+%%%%%%%%%%%%%
+\newbox\ackbox
+\newenvironment{acknowledgments}{%
+    \ifx\maketitle\relax
         \ClassWarning{\@classname}{Acknowledgments should precede
-          \protect\maketitle\space in the csuthesis class; reported}%
-      \fi
-      \global\setbox\ackbox=\vtop
-      {
+            \protect\maketitle\space in the csuthesis class; reported}%
+    \fi
+    \global\setbox\ackbox=\vtop
+    {
         \bgroup
-          \begin{center}
-              {\normalsize\MakeUppercase{Acknowledgments}}
-          \end{center}
-          \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
-        }
-    }{
-      \endlist\egroup
+        \begin{center}
+            {\normalsize\MakeUppercase{Acknowledgments}}
+        \end{center}
+        \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
     }
-    %%%%%%%%%%%%%
-    % dedication
-    %%%%%%%%%%%%%
-    \newbox\dedbox
-    \newenvironment{dedication}{%
-      \ifx\maketitle\relax
+}{
+    \endlist\egroup
+}
+%%%%%%%%%%%%%
+% dedication
+%%%%%%%%%%%%%
+\newbox\dedbox
+\newenvironment{dedication}{%
+    \ifx\maketitle\relax
         \ClassWarning{\@classname}{dedication should precede
-          \protect\maketitle\space in the csuthesis class; reported}%
-      \fi
-      \global\setbox\dedbox=\vtop
-      {
-      \bgroup
-          \begin{center}
-              {\normalsize\MakeUppercase{Dedication}}
-          \end{center}
-          \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
-        }
-    }{%
-      \endlist\egroup
+            \protect\maketitle\space in the csuthesis class; reported}%
+    \fi
+    \global\setbox\dedbox=\vtop
+    {
+        \bgroup
+        \begin{center}
+            {\normalsize\MakeUppercase{Dedication}}
+        \end{center}
+        \skip@ 3em \advance\skip@-\normalbaselineskip\vskip\skip@
     }
-    %%%%%%%%%%%%%
-    % Title Page
-    %%%%%%%%%%%%%
-    \renewcommand{\maketitle}{%
-        \begin{titlepage}
-            \begin{center}{\normalsize
+}{%
+    \endlist\egroup
+}
+%%%%%%%%%%%%%
+% Title Page
+%%%%%%%%%%%%%
+\renewcommand{\maketitle}{%
+    \begin{titlepage}
+        \begin{center}{\normalsize
                 \pdfbookmark{\@title}{\@title}
                 \ifphd
                     \MakeUppercase{Dissertation}
@@ -457,7 +458,7 @@
                 \fi
                 ~\vfill
             }\end{center}
-            \begin{singlespace}{\normalsize
+        \begin{singlespace}{\normalsize
                 \ifphd
                     Doctoral Committee:\\
                 \else
@@ -478,47 +479,47 @@
                     \@committee
                 \end{tabbing}
             }\end{singlespace}
-        \end{titlepage}
+    \end{titlepage}
     %%%%%%%%%%%%%
     % Copyright page
     %%%%%%%%%%%%%
-        \ifnocopyright
-            \relax
-        \else
-            % Make a copyright page
-            \thispagestyle{empty}
-            \pdfbookmark{Copyright}{Copyright}
-            \vspace*{\fill}
-            \begin{center}
-                {\normalsize Copyright by \@author~\@gradyear \\ All Rights Reserved}
-            \end{center}
-            \vspace*{\fill}
-            \clearpage
-        \fi
+    \ifnocopyright
+        \relax
+    \else
+        % Make a copyright page
+        \thispagestyle{empty}
+        \pdfbookmark{Copyright}{Copyright}
+        \vspace*{\fill}
+        \begin{center}
+            {\normalsize Copyright by \@author~\@gradyear \\ All Rights Reserved}
+        \end{center}
+        \vspace*{\fill}
+        \clearpage
+    \fi
     %%%%%%%%%%%%%
     % Add the Abstract, Acknowledgements, and Dedication pages to the Table of Contents
     %%%%%%%%%%%%%
-        \setcounter{page}{2} %the copyright page is not assigned a number nor counted
-            \clearpage
-            \phantomsection
-            \addcontentsline{toc}{chapter}{\MakeUppercase{Abstract}}
-            \unvbox\abstractbox
-        \ifvoid\ackbox
-        \else
-            \clearpage
-            \phantomsection
-            \unvbox\ackbox
-            \addcontentsline{toc}{chapter}{\MakeUppercase{Acknowledgments}}
-        \fi
-        % Dedication
-        \ifvoid\dedbox
-        \else
-            \clearpage
-            \phantomsection
-            \unvbox\dedbox
-            \addcontentsline{toc}{chapter}{\MakeUppercase{Dedication}}
-        \fi
-    }
+    \setcounter{page}{2} %the copyright page is not assigned a number nor counted
+    \clearpage
+    \phantomsection
+    \addcontentsline{toc}{chapter}{\MakeUppercase{Abstract}}
+    \unvbox\abstractbox
+    \ifvoid\ackbox
+    \else
+        \clearpage
+        \phantomsection
+        \unvbox\ackbox
+        \addcontentsline{toc}{chapter}{\MakeUppercase{Acknowledgments}}
+    \fi
+    % Dedication
+    \ifvoid\dedbox
+    \else
+        \clearpage
+        \phantomsection
+        \unvbox\dedbox
+        \addcontentsline{toc}{chapter}{\MakeUppercase{Dedication}}
+    \fi
+}
 \makeatother
 %%%%%%%%%%%%
 % Appendix formatting
@@ -544,7 +545,7 @@
         \renewcommand\thesubsection{\thechapter\arabic{subsection}}
         \begin{center}%
             {\textnormal APPENDIX\vskip1em%
-        }
+            }
         \end{center}
     }
     %%%%%%%%%%%%%
@@ -568,5 +569,5 @@
 }%
 % Appendix title formatting and table of contents entry
 \makeatletter
-    \newcommand{\appendixtitle}[1]{{\centering\bf\scshape {#1}\vskip1em}{\addcontentsline{toc}{chapter}{\appendixname~\thechapter.~~ {#1}}}}
+\newcommand{\appendixtitle}[1]{{\centering\bf\scshape {#1}\vskip1em}{\addcontentsline{toc}{chapter}{\appendixname~\thechapter.~~ {#1}}}}
 \makeatother
