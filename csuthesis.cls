@@ -157,14 +157,14 @@
 % 10000 is the maximum allowed value for the penalties.
 % See https://tex.stackexchange.com/a/51264 for more details
 % on penalty options within LaTeX
-\clubpenalty=10000  % extra penalty for breaking after first line of a paragraph
+\clubpenalty=1000  % extra penalty for breaking after first line of a paragraph
 \widowpenalty=10000  % extra penalty for breaking before last line of a paragraph
 \displaywidowpenalty=10000  % extra penalty for breaking before last line before a display math
 \brokenpenalty=10000  % extra penalty for page breaking after a hyphenated line
 % Because Word does not fulfill the flush bottom requirement, this
 % can be relaxed. However, \raggedbottom negatively impacts the
 % footer. Instead, we use footmisc
-\usepackage[bottom]{footmisc}
+\RequirePackage[bottom]{footmisc}
 
 % set page heading style (plain) and page numbering size
 \makeatletter
@@ -251,7 +251,7 @@
 %%%%%%%%
 % Section, subsection, and subsubsection headings
 %%%%%%%%
-\usepackage[compact]{titlesec}
+\RequirePackage[compact]{titlesec}
 \makeatletter
     % section
     \titleformat{\section}{\normalfont\scshape}{\thesection}{1em}{}
@@ -291,7 +291,7 @@
 %%%%%%%%%%%%%%%%%%%%%%
 \DeclareRobustCommand{\gobblefour}[4]{}
 \newcommand*{\SkipTocEntry}{\addtocontents{toc}{\gobblefour}}
-\usepackage{etoolbox}
+\RequirePackage{etoolbox}
 \makeatletter
     % toc, lot, lof heading formatting
     \def\@makescsuhead#1{
