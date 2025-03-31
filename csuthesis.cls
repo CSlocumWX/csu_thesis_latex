@@ -112,6 +112,7 @@
     \def\coadvisor#1{\gdef\@coadvisor{#1}}
 \makeatother
 \RequirePackage{ifthen}
+\RequirePackage{iftex}
 %%%%%%%%%%%%%%%%%%%%%%%%
 %   Page layout/formatting
 %%%%%%%%%%%%%%%%%%%%%%
@@ -133,6 +134,12 @@
 
 % Setting the page
 % Creates one inch margins around the edges of the document
+\ifluatex
+    % LuaTeX no longer supports \pdfpagewidth or \pdfpageheight
+    % Create backwards compatibility
+    \let\pdfpagewidth\pagewidth
+    \let\pdfpageheight\pageheight
+\fi
 \pdfpagewidth 8.5in
 \pdfpageheight 11in
 \headheight 0pt
