@@ -141,17 +141,17 @@
     \let\pdfpagewidth\pagewidth
     \let\pdfpageheight\pageheight
 \fi
-\setlength{\paperheight}{11in}%
-\setlength{\paperwidth}{8.5in}%
+\setlength{\paperheight}{11truein}%
+\setlength{\paperwidth}{8.5truein}%
 \setlength{\headheight}{0pt}%
 \setlength{\headsep}{0pt}%
 \setlength{\footskip}{\footskipamount}% puts page number 0.5 in below text (e.g., 0.5in from bottom of page)
 \setlength{\marginparwidth}{0pt}%
 \setlength{\marginparsep}{0pt}%
-\setlength{\oddsidemargin}{\dimexpr 1in-1in}
-\setlength{\topmargin}{\dimexpr 1in -1in}
-\setlength{\textwidth}{\dimexpr \pdfpagewidth -2\oddsidemargin -2in}
-\setlength{\textheight}{\dimexpr \pdfpageheight -2\topmargin -2in}
+\setlength{\oddsidemargin}{\dimexpr 1truein-1truein}
+\setlength{\topmargin}{\dimexpr 1truein -1truein}
+\setlength{\textwidth}{\dimexpr \pdfpagewidth -2\oddsidemargin -2truein}
+\setlength{\textheight}{\dimexpr \pdfpageheight -2\topmargin -2truein}
 % Penalties to control the behavior of orphans and widows
 % The higher the values, the more important it is for LaTeX
 % to follow the penalty. 150 to 500 are pretty high values and
