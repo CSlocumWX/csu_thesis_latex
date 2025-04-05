@@ -62,7 +62,7 @@
 %   CSU now requires the copyright page. If this changes, nocopyright
 %   restores old format
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{csuthesis}[2025/03/23 CSU thesis and disseration class]
+\ProvidesClass{csuthesis}[2025-03-23 CSU thesis and disseration class]
 %%%%%%%%%%%%%%%%%%%%%%%%
 %   Document class options
 %%%%%%%%%%%%%%%%%%%%%%
