@@ -141,8 +141,8 @@
     \let\pdfpagewidth\pagewidth
     \let\pdfpageheight\pageheight
 \fi
-\setlength{\paperwidth}{11in}%
-\setlength{\paperheight}{8.5in}%
+\setlength{\paperheight}{11in}%
+\setlength{\paperwidth}{8.5in}%
 \setlength{\headheight}{0pt}%
 \setlength{\headsep}{0pt}%
 \setlength{\footskip}{\footskipamount}% puts page number 0.5 in below text (e.g., 0.5in from bottom of page)
@@ -226,7 +226,7 @@
 \fi
 % This turns doi entries in the references to links
 \newcommand*{\doi}[1]{\href{http://dx.doi.org/\detokenize{#1}}{doi: \detokenize{#1}}}
-\RequirePackage{lscape}
+%\RequirePackage{lscape}
 %%%%%%%%
 % Chapter "Primary" Headings
 %%%%%%%%
