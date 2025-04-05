@@ -133,7 +133,7 @@
     \makeatother
 \fi
 
-% Setting the page
+% Setting the layout parameters
 % Creates one inch margins around the edges of the document
 \ifluatex
     % LuaTeX no longer supports \pdfpagewidth or \pdfpageheight
@@ -141,17 +141,17 @@
     \let\pdfpagewidth\pagewidth
     \let\pdfpageheight\pageheight
 \fi
-\pdfpagewidth 8.5in
-\pdfpageheight 11in
-\headheight 0pt
-\headsep 0pt
-\footskip \footskipamount  % puts page number 0.5 in below text (e.g., 0.5in from bottom of page)
-\marginparwidth 0pt
-\marginparsep 0pt
-\oddsidemargin \dimexpr 1in -1in
-\topmargin \dimexpr 1in -1in
-\textwidth \dimexpr \pdfpagewidth -2\oddsidemargin -2in
-\textheight \dimexpr \pdfpageheight -2\topmargin -2in
+\setlength{\paperwidth}{11in}%
+\setlength{\paperheight}{8.5in}%
+\setlength{\headheight}{0pt}%
+\setlength{\headsep}{0pt}%
+\setlength{\footskip}{\footskipamount}% puts page number 0.5 in below text (e.g., 0.5in from bottom of page)
+\setlength{\marginparwidth}{0pt}%
+\setlength{\marginparsep}{0pt}%
+\setlength{\oddsidemargin}{\dimexpr 1in-1in}
+\setlength{\topmargin}{\dimexpr 1in -1in}
+\setlength{\textwidth}{\dimexpr \pdfpagewidth -2\oddsidemargin -2in}
+\setlength{\textheight}{\dimexpr \pdfpageheight -2\topmargin -2in}
 % Penalties to control the behavior of orphans and widows
 % The higher the values, the more important it is for LaTeX
 % to follow the penalty. 150 to 500 are pretty high values and
