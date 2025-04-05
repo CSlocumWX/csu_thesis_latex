@@ -226,7 +226,7 @@
 \fi
 % This turns doi entries in the references to links
 \newcommand*{\doi}[1]{\href{http://dx.doi.org/\detokenize{#1}}{doi: \detokenize{#1}}}
-%\RequirePackage{lscape}
+\RequirePackage{lscape}
 %%%%%%%%
 % Chapter "Primary" Headings
 %%%%%%%%
