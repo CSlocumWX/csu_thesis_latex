@@ -249,17 +249,50 @@
 %%%%%%%%
 % Section, subsection, and subsubsection headings
 %%%%%%%%
-\RequirePackage[compact]{titlesec}
 \makeatletter
-% section
-\titleformat{\section}{\normalfont\scshape}{\thesection}{1em}{}
-\titlespacing{\section}{0pt}{1em}{*0}
-% subsection
-\titleformat{\subsection}{\normalfont\it}{\thesubsection}{1em}{}
-\titlespacing{\subsection}{0pt}{*0}{*0}
+% section definition
+\renewcommand{\section}{%
+\renewcommand{\@seccntformat}[1]{
+    {\csname the##1\endcsname}.~~}%1
+    \@startsection
+    {section}%
+    {1}% 1 is the level for section
+    {0mm}% NO indent, starts immediately
+    {0mm}% No skip baseline after end of previous subsection
+    {1em}% 1 em baseline skip and the first paragraph starts
+    {\normalsize\scshape}%the style, Large and boldface
+}
+\renewcommand{\thesection}{\arabic{section}} % numbers
+
+% subsection definitions
+\renewcommand{\subsection}{%
+\renewcommand{\@seccntformat}[1]{
+    {\csname the##1\endcsname}.~~}%1
+    \@startsection
+    {subsection}%
+    {2}% 2 is the level for subsection
+    {0mm}% NO indent, starts immediately
+    {0mm}% No skip baseline after end of previous subsection
+    {1em}% 1 em baseline skip and the first paragraph starts
+    {\normalfont\scshape}%the style, all italics
+}
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+
 % subsubsection
-\titleformat{\subsubsection}{\normalfont\scshape}{\thesubsubsection}{1em}{}
-\titlespacing{\subsubsection}{0pt}{*0}{*0}
+%\titleformat{\subsubsection}{\normalfont\scshape}{\thesubsubsection}{1em}{}
+%\titlespacing{\subsubsection}{0pt}{*0}{*0}
+\renewcommand{\subsubsection}{%
+\renewcommand{\@seccntformat}[1]{
+    {\csname the##1\endcsname}.~~}%1
+    \@startsection
+    {subsubsection}%
+    {3}% 3 is the level for subsubsection
+    {0mm}% Indent subsubsections
+    {0mm}% No skip baseline after end of previous subsection
+    {1em}% 1 em baseline skip and the first paragraph starts
+    {\normalfont\scshape}%
+}
+\renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
 \makeatother
 %%%%%%%%
 % Figure and table formatting
