@@ -183,18 +183,15 @@
 
 % import graphics
 \RequirePackage{graphicx}
-\RequirePackage{float}
 
 % math and symbol packages
 \DeclareMathAlphabet{\CMcal}{OMS}{cmsy}{m}{n}
 \RequirePackage{amsmath,amsfonts,bm}
-\RequirePackage{mathtools}
 \iftimes
     \RequirePackage{newtxtext}
     \RequirePackage{newtxmath}
 \else
     \RequirePackage{fourier}
-    \RequirePackage[T1]{fontenc}
 \fi
 
 
@@ -229,7 +226,7 @@
 \fi
 % This turns doi entries in the references to links
 \newcommand*{\doi}[1]{\href{http://dx.doi.org/\detokenize{#1}}{doi: \detokenize{#1}}}
-\RequirePackage[pdftex]{lscape}
+\RequirePackage{lscape}
 %%%%%%%%
 % Chapter "Primary" Headings
 %%%%%%%%
@@ -292,7 +289,6 @@
 %%%%%%%%%%%%%%%%%%%%%%
 \DeclareRobustCommand{\gobblefour}[4]{}
 \newcommand*{\SkipTocEntry}{\addtocontents{toc}{\gobblefour}}
-\RequirePackage{etoolbox}
 \makeatletter
 % toc, lot, lof heading formatting
 \def\@makescsuhead#1{
