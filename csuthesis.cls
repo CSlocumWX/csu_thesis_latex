@@ -332,9 +332,10 @@
     \end{center}}
 
 \def\@starttoc#1#2{%
+    \newpage
     \begingroup
     \setTrue{#1}%
-    \let\secdef\@gobbletwo \chapter
+    \let\secdef \chapter
     \let\@secnumber\@empty
     \ifx\contentsname#2%
     \else \@tocwrite{chapter}{#2}\fi
